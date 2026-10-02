@@ -201,7 +201,6 @@ const catalog = {
     underline: "Onderstreept",
     textColor: "Tekstkleur",
     clearColor: "Kleur wissen",
-    size: "Grootte",
     font: "Lettertype",
     fontSans: "Schreefloos",
     fontMono: "Mono",

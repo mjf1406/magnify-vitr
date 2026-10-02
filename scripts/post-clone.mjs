@@ -786,7 +786,7 @@ Suggested order:
   3. bunx instant-cli push schema && bunx instant-cli push perms
      (only on a new or empty app — this schema drop is destructive)
   4. Configure Google OAuth origins + Instant callback
-  5. Replace public/vitr/logo-big.webp + public/vitr/logo-small.webp
+  5. Replace public/brand/logo/magnitext-logo.webp, then bun run brand:icons
   6. Create a Portainer Git stack and point Cloudflare Tunnel at WEB_PORT
 
 Access mode is ${accessMode}. Flip PUBLIC_READ in instant.perms.ts and re-push perms to switch later.

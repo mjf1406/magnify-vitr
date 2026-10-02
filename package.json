@@ -20,6 +20,7 @@
     "audit": "bun audit",
     "preview": "vp preview",
     "post-clone": "bun scripts/post-clone.mjs",
+    "brand:icons": "bun scripts/generate-brand-icons.mjs",
     "prepare": "vp config"
   },
   "dependencies": {

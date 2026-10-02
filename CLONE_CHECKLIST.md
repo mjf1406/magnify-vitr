@@ -46,7 +46,7 @@ Do **not** reuse another clone’s Instant app or copy `.env` / `.env.local` sec
 
 - [ ] `.env.example` present with Vite-side vars documented
 
-`bun run post-clone` marks the identity items it edits. Product brand: `public/vitr/` (`logo-big.webp`, `logo-small.webp`).
+`bun run post-clone` marks the identity items it edits. Product brand source: `public/brand/logo/magnitext-logo.webp`. Run `bun run brand:icons` to refresh favicon, `public/vitr/`, and `public/pwa/`.
 
 <!-- clone:brand-assets -->
 

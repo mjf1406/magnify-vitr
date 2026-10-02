@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PencilIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { useTheme } from "@/components/theme/theme-context";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -13,7 +14,13 @@ import {
 import { useDraft } from "@/hooks/bigtext/useDraft";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { loadDraft } from "@/lib/bigtext/draft";
-import { defaultStyle, sampleDoc, type PresetStyle, type RichDoc } from "@/lib/bigtext/types";
+import {
+  applyThemeColors,
+  defaultStyle,
+  sampleDoc,
+  type PresetStyle,
+  type RichDoc,
+} from "@/lib/bigtext/types";
 import type { SavedPreset } from "@/hooks/presets/usePresets";
 
 import { BigTextDisplay } from "./BigTextDisplay";
@@ -24,16 +31,23 @@ import { TextEditor, type TextEditorHandle } from "./TextEditor";
 
 export function BigTextPage() {
   const { t } = useTranslation("bigtext");
+  const { resolvedTheme } = useTheme();
   const isMobile = useIsMobile();
   const [snapshot] = useState(loadDraft);
   const [doc, setDoc] = useState<RichDoc>(snapshot?.doc ?? sampleDoc());
-  const [style, setStyle] = useState<PresetStyle>(snapshot?.style ?? defaultStyle());
+  const [style, setStyle] = useState<PresetStyle>(() =>
+    applyThemeColors(snapshot?.style ?? defaultStyle(), resolvedTheme),
+  );
   const [name, setName] = useState("");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [textOpen, setTextOpen] = useState(false);
   const [selectAllToken, setSelectAllToken] = useState(0);
   const editorRef = useRef<TextEditorHandle>(null);
   useDraft(doc, style);
+
+  useEffect(() => {
+    setStyle((current) => applyThemeColors(current, resolvedTheme));
+  }, [resolvedTheme]);
 
   function loadPreset(preset: SavedPreset) {
     setDoc(preset.doc);

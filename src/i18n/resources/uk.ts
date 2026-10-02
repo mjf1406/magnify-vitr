@@ -201,7 +201,6 @@ const catalog = {
     underline: "Підкреслений",
     textColor: "Колір тексту",
     clearColor: "Прибрати колір",
-    size: "Розмір",
     font: "Шрифт",
     fontSans: "Без засічок",
     fontMono: "Моно",

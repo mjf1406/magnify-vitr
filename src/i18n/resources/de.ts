@@ -201,7 +201,6 @@ const catalog = {
     underline: "Unterstrichen",
     textColor: "Textfarbe",
     clearColor: "Farbe entfernen",
-    size: "Größe",
     font: "Schrift",
     fontSans: "Serifenlos",
     fontMono: "Monospace",

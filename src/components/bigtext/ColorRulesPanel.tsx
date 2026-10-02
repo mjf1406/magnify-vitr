@@ -1,9 +1,12 @@
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
+import { Field, FieldDescription, FieldGroup, FieldLabel, FieldTitle } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { isHexColor, ruleLabelKey, type ColorRule } from "@/lib/bigtext/types";
+import { ruleLabelKey, type ColorRule } from "@/lib/bigtext/types";
+
+import { ColorSwatch } from "./ColorSwatch";
 
 type ColorRulesPanelProps = {
   rules: ColorRule[];
@@ -18,29 +21,28 @@ export function ColorRulesPanel({ rules, onChange }: ColorRulesPanelProps) {
   }
 
   return (
-    <section className="flex flex-col gap-3">
-      <div>
-        <h2 className="text-sm font-medium">{t("rulesTitle")}</h2>
-        <p className="mt-1 text-xs text-muted-foreground">{t("rulesHint")}</p>
-      </div>
-      <ul className="flex flex-col gap-2">
-        {rules.map((rule) => (
-          <li key={rule.id} className="flex flex-wrap items-center gap-2">
+    <FieldGroup className="gap-3">
+      <Field className="gap-1">
+        <FieldTitle>{t("rulesTitle")}</FieldTitle>
+        <FieldDescription>{t("rulesHint")}</FieldDescription>
+      </Field>
+      {rules.map((rule) => {
+        const switchId = `color-rule-${rule.id}`;
+        return (
+          <Field key={rule.id} orientation="horizontal" className="flex-wrap">
             <Switch
+              id={switchId}
               checked={rule.enabled}
               aria-label={t(ruleLabelKey(rule.kind))}
               onCheckedChange={(checked) => update(rule.id, { enabled: checked })}
             />
-            <span className="min-w-24 text-sm">{t(ruleLabelKey(rule.kind))}</span>
-            <input
-              type="color"
-              aria-label={t("color")}
+            <FieldLabel htmlFor={switchId} className="min-w-24">
+              {t(ruleLabelKey(rule.kind))}
+            </FieldLabel>
+            <ColorSwatch
               value={rule.color}
-              className="size-8 cursor-pointer rounded-full border border-border bg-transparent p-0.5"
-              onChange={(event) => {
-                if (!isHexColor(event.target.value)) return;
-                update(rule.id, { color: event.target.value });
-              }}
+              label={t("color")}
+              onChange={(color) => update(rule.id, { color })}
             />
             {rule.kind === "custom" ? (
               <>
@@ -62,9 +64,9 @@ export function ColorRulesPanel({ rules, onChange }: ColorRulesPanelProps) {
                 </Button>
               </>
             ) : null}
-          </li>
-        ))}
-      </ul>
+          </Field>
+        );
+      })}
       <Button
         type="button"
         size="sm"
@@ -85,6 +87,6 @@ export function ColorRulesPanel({ rules, onChange }: ColorRulesPanelProps) {
       >
         {t("addRule")}
       </Button>
-    </section>
+    </FieldGroup>
   );
 }

@@ -1,6 +1,7 @@
 /**
  * TEMPLATE: Single brand config — change these when cloning (`bun run post-clone`).
- * Brand images: `public/vitr/` (`logo-big.webp`, `logo-small.webp`).
+ * Brand source: `public/brand/logo/magnitext-logo.webp`.
+ * Derived icons: `bun run brand:icons` → `public/vitr/`, `public/pwa/`, favicon.
  * `name` is never translated — i18n uses it via defaultVariables.appName.
  */
 export const APP_CONFIG = {

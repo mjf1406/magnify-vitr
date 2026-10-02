@@ -1,8 +1,24 @@
 import { useTranslation } from "react-i18next";
 
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { fontFamilies, isHexColor, type PresetStyle, type TextAlign } from "@/lib/bigtext/types";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  fontFamilies,
+  type FontFamilyId,
+  type PresetStyle,
+  type TextAlign,
+} from "@/lib/bigtext/types";
+
+import { ColorSwatch } from "./ColorSwatch";
 
 type StyleControlsProps = {
   style: PresetStyle;
@@ -11,107 +27,125 @@ type StyleControlsProps = {
 
 const ALIGN_OPTIONS: TextAlign[] = ["left", "center", "right"];
 
+function fontLabel(family: FontFamilyId, t: (key: string) => string): string {
+  if (family === "sans") return t("fontSans");
+  if (family === "mono") return t("fontMono");
+  return t("fontSerif");
+}
+
+function alignLabel(align: TextAlign, t: (key: string) => string): string {
+  if (align === "left") return t("alignLeft");
+  if (align === "center") return t("alignCenter");
+  return t("alignRight");
+}
+
+function sliderValue(value: number | readonly number[]): number | undefined {
+  return typeof value === "number" ? value : value[0];
+}
+
 export function StyleControls({ style, onChange }: StyleControlsProps) {
   const { t } = useTranslation("bigtext");
 
   return (
-    <section className="flex flex-col gap-3">
-      <Label htmlFor="bigtext-font">{t("font")}</Label>
-      <select
-        id="bigtext-font"
-        className="h-9 rounded-4xl border border-input bg-input/30 px-3 text-sm"
-        value={style.fontFamily}
-        onChange={(event) => {
-          const fontFamily = fontFamilies.find((family) => family === event.target.value);
-          if (!fontFamily) return;
-          onChange({ ...style, fontFamily });
-        }}
-      >
-        {fontFamilies.map((family) => (
-          <option key={family} value={family}>
-            {family === "sans" ? t("fontSans") : family === "mono" ? t("fontMono") : t("fontSerif")}
-          </option>
-        ))}
-      </select>
+    <FieldGroup className="gap-4">
+      <Field>
+        <FieldLabel htmlFor="bigtext-font">{t("font")}</FieldLabel>
+        <Select
+          value={style.fontFamily}
+          onValueChange={(next) => {
+            const fontFamily = fontFamilies.find((family) => family === next);
+            if (!fontFamily) return;
+            onChange({ ...style, fontFamily });
+          }}
+        >
+          <SelectTrigger id="bigtext-font" className="w-full">
+            <SelectValue>{fontLabel(style.fontFamily, t)}</SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {fontFamilies.map((family) => (
+                <SelectItem key={family} value={family}>
+                  {fontLabel(family, t)}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </Field>
       <div className="grid grid-cols-2 gap-3">
-        <label className="flex items-center justify-between gap-2 text-sm">
-          {t("color")}
-          <input
-            type="color"
-            aria-label={t("color")}
+        <Field orientation="horizontal">
+          <FieldLabel>{t("color")}</FieldLabel>
+          <ColorSwatch
             value={style.textColor}
-            className="size-8 cursor-pointer rounded-full border border-border bg-transparent p-0.5"
-            onChange={(event) => {
-              if (!isHexColor(event.target.value)) return;
-              onChange({ ...style, textColor: event.target.value });
-            }}
+            label={t("color")}
+            onChange={(textColor) => onChange({ ...style, textColor })}
           />
-        </label>
-        <label className="flex items-center justify-between gap-2 text-sm">
-          {t("background")}
-          <input
-            type="color"
-            aria-label={t("background")}
+        </Field>
+        <Field orientation="horizontal">
+          <FieldLabel>{t("background")}</FieldLabel>
+          <ColorSwatch
             value={style.backgroundColor}
-            className="size-8 cursor-pointer rounded-full border border-border bg-transparent p-0.5"
-            onChange={(event) => {
-              if (!isHexColor(event.target.value)) return;
-              onChange({ ...style, backgroundColor: event.target.value });
-            }}
+            label={t("background")}
+            onChange={(backgroundColor) => onChange({ ...style, backgroundColor })}
           />
-        </label>
+        </Field>
       </div>
-      <div className="flex flex-col gap-2">
-        <span className="text-sm font-medium">{t("align")}</span>
-        <div className="flex gap-1">
+      <Field>
+        <FieldLabel>{t("align")}</FieldLabel>
+        <ToggleGroup
+          variant="outline"
+          size="sm"
+          spacing={1}
+          value={[style.align]}
+          onValueChange={(next) => {
+            const align = next[0];
+            if (align !== "left" && align !== "center" && align !== "right") return;
+            onChange({ ...style, align });
+          }}
+        >
           {ALIGN_OPTIONS.map((align) => (
-            <Button
-              key={align}
-              type="button"
-              size="sm"
-              variant={style.align === align ? "secondary" : "outline"}
-              aria-pressed={style.align === align}
-              onClick={() => onChange({ ...style, align })}
-            >
-              {align === "left"
-                ? t("alignLeft")
-                : align === "center"
-                  ? t("alignCenter")
-                  : t("alignRight")}
-            </Button>
+            <ToggleGroupItem key={align} value={align}>
+              {alignLabel(align, t)}
+            </ToggleGroupItem>
           ))}
+        </ToggleGroup>
+      </Field>
+      <Field>
+        <div className="flex items-center justify-between">
+          <FieldLabel>{t("padding")}</FieldLabel>
+          <span className="text-sm text-muted-foreground">{Math.round(style.padding)}</span>
         </div>
-      </div>
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="flex justify-between">
-          {t("padding")}
-          <span className="text-muted-foreground">{Math.round(style.padding)}</span>
-        </span>
-        <input
-          type="range"
+        <Slider
           min={0}
           max={160}
           step={1}
-          value={style.padding}
+          value={[style.padding]}
           aria-label={t("padding")}
-          onChange={(event) => onChange({ ...style, padding: Number(event.target.value) })}
+          onValueChange={(value) => {
+            const padding = sliderValue(value);
+            if (padding === undefined) return;
+            onChange({ ...style, padding });
+          }}
         />
-      </label>
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="flex justify-between">
-          {t("lineHeight")}
-          <span className="text-muted-foreground">{style.lineHeight.toFixed(2)}</span>
-        </span>
-        <input
-          type="range"
+      </Field>
+      <Field>
+        <div className="flex items-center justify-between">
+          <FieldLabel>{t("lineHeight")}</FieldLabel>
+          <span className="text-sm text-muted-foreground">{style.lineHeight.toFixed(2)}</span>
+        </div>
+        <Slider
           min={0.8}
           max={2}
           step={0.05}
-          value={style.lineHeight}
+          value={[style.lineHeight]}
           aria-label={t("lineHeight")}
-          onChange={(event) => onChange({ ...style, lineHeight: Number(event.target.value) })}
+          onValueChange={(value) => {
+            const next = sliderValue(value);
+            if (next === undefined) return;
+            onChange({ ...style, lineHeight: Math.round(next * 100) / 100 });
+          }}
         />
-      </label>
-    </section>
+      </Field>
+    </FieldGroup>
   );
 }

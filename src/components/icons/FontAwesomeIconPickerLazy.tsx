@@ -1,4 +1,7 @@
 import { lazy, Suspense } from "react";
+
+import { Skeleton } from "@/components/ui/skeleton";
+
 import type { FontAwesomeIconPickerProps } from "./FontAwesomeIconPicker";
 
 const FontAwesomeIconPicker = lazy(() =>
@@ -8,7 +11,7 @@ const FontAwesomeIconPicker = lazy(() =>
 );
 
 function PickerFallback() {
-  return <div className="h-9 w-32 animate-pulse rounded-md bg-muted" />;
+  return <Skeleton className="h-9 w-32" />;
 }
 
 export function FontAwesomeIconPickerLazy(props: FontAwesomeIconPickerProps) {

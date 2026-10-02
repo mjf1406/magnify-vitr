@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Empty, EmptyDescription, EmptyHeader } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { undoToast } from "@/components/ui/undo-toast";
@@ -129,9 +131,17 @@ export function PresetMenu({
           {t("rename")}
         </Button>
       </div>
-      {presets.isError ? <p className="text-sm text-destructive">{t("loadFailed")}</p> : null}
+      {presets.isError ? (
+        <Alert variant="destructive">
+          <AlertDescription>{t("loadFailed")}</AlertDescription>
+        </Alert>
+      ) : null}
       {presets.isPending ? null : presets.data.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{t("emptyPresets")}</p>
+        <Empty className="flex-none border p-4">
+          <EmptyHeader>
+            <EmptyDescription>{t("emptyPresets")}</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       ) : (
         <ul className="flex max-h-48 flex-col gap-1 overflow-y-auto">
           {presets.data.map((preset) => (

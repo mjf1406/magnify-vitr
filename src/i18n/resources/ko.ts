@@ -198,7 +198,6 @@ const catalog = {
     underline: "밑줄",
     textColor: "글자 색",
     clearColor: "색 지우기",
-    size: "크기",
     font: "글꼴",
     fontSans: "산세리프",
     fontMono: "고정폭",

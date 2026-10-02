@@ -6,9 +6,11 @@ import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from "rea
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { richDocToTiptap, tiptapToRichDoc } from "@/lib/bigtext/richDoc";
-import { SCALE_OPTIONS, isHexColor, type ColorRule, type RichDoc } from "@/lib/bigtext/types";
+import { isHexColor, type ColorRule, type RichDoc } from "@/lib/bigtext/types";
 
+import { ColorSwatch } from "./ColorSwatch";
 import { colorRulePreview } from "./colorRulePreview";
 import { Scale } from "./scaleMark";
 
@@ -24,7 +26,14 @@ type TextEditorProps = {
   selectAllToken?: number;
 };
 
-const editorClass = "min-h-32 whitespace-pre-wrap px-3 py-2 text-sm outline-none";
+const MARKS = ["bold", "italic", "underline"] as const;
+type Mark = (typeof MARKS)[number];
+
+const editorClass = "min-h-32 whitespace-pre-wrap px-3 py-3 text-sm outline-none";
+
+function isMark(value: string): value is Mark {
+  return value === "bold" || value === "italic" || value === "underline";
+}
 
 export const TextEditor = forwardRef<TextEditorHandle, TextEditorProps>(function TextEditor(
   { initialDoc, rules, onChange, selectAllToken = 0 },
@@ -113,64 +122,52 @@ export const TextEditor = forwardRef<TextEditorHandle, TextEditorProps>(function
   const currentColor = editor?.getAttributes("textStyle").color;
   const colorValue =
     typeof currentColor === "string" && isHexColor(currentColor) ? currentColor : "#111111";
-  const currentScale = editor?.getAttributes("scale").scale;
-  const scaleValue = typeof currentScale === "number" ? currentScale : 1;
+  const activeMarks = MARKS.filter((mark) => editor?.isActive(mark) ?? false);
+
+  function applyMarks(next: readonly string[]) {
+    if (!editor) return;
+    const wanted = new Set(next.filter(isMark));
+    let chain = editor.chain().focus();
+    if (editor.isActive("bold") !== wanted.has("bold")) chain = chain.toggleBold();
+    if (editor.isActive("italic") !== wanted.has("italic")) chain = chain.toggleItalic();
+    if (editor.isActive("underline") !== wanted.has("underline")) chain = chain.toggleUnderline();
+    chain.run();
+  }
 
   return (
     <div className="flex flex-col gap-2">
       <div
-        className="flex flex-wrap items-center gap-1"
+        className="flex flex-wrap items-center gap-2"
         role="toolbar"
         aria-label={t("editorLabel")}
       >
-        <Button
-          type="button"
-          size="icon-sm"
-          variant={editor?.isActive("bold") ? "secondary" : "outline"}
-          aria-pressed={editor?.isActive("bold") ?? false}
-          aria-label={t("bold")}
+        <ToggleGroup
+          multiple
+          variant="outline"
+          size="sm"
+          spacing={1}
           disabled={!editor}
-          onClick={() => editor?.chain().focus().toggleBold().run()}
+          value={activeMarks}
+          onValueChange={applyMarks}
         >
-          <BoldIcon />
-        </Button>
-        <Button
-          type="button"
-          size="icon-sm"
-          variant={editor?.isActive("italic") ? "secondary" : "outline"}
-          aria-pressed={editor?.isActive("italic") ?? false}
-          aria-label={t("italic")}
+          <ToggleGroupItem value="bold" aria-label={t("bold")}>
+            <BoldIcon />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="italic" aria-label={t("italic")}>
+            <ItalicIcon />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="underline" aria-label={t("underline")}>
+            <UnderlineIcon />
+          </ToggleGroupItem>
+        </ToggleGroup>
+        <ColorSwatch
+          value={colorValue}
+          label={t("textColor")}
           disabled={!editor}
-          onClick={() => editor?.chain().focus().toggleItalic().run()}
-        >
-          <ItalicIcon />
-        </Button>
-        <Button
-          type="button"
-          size="icon-sm"
-          variant={editor?.isActive("underline") ? "secondary" : "outline"}
-          aria-pressed={editor?.isActive("underline") ?? false}
-          aria-label={t("underline")}
-          disabled={!editor}
-          onClick={() => editor?.chain().focus().toggleUnderline().run()}
-        >
-          <UnderlineIcon />
-        </Button>
-        <label className="ml-1 flex items-center gap-1 text-xs text-muted-foreground">
-          <span className="sr-only">{t("textColor")}</span>
-          <input
-            type="color"
-            aria-label={t("textColor")}
-            value={colorValue}
-            disabled={!editor}
-            className="size-8 cursor-pointer rounded-full border border-border bg-transparent p-0.5"
-            onChange={(event) => {
-              const next = event.target.value;
-              if (!isHexColor(next)) return;
-              editor?.chain().focus().setColor(next).run();
-            }}
-          />
-        </label>
+          onChange={(next) => {
+            editor?.chain().focus().setColor(next).run();
+          }}
+        />
         <Button
           type="button"
           size="sm"
@@ -180,28 +177,8 @@ export const TextEditor = forwardRef<TextEditorHandle, TextEditorProps>(function
         >
           {t("clearColor")}
         </Button>
-        <label className="ml-1 flex items-center gap-1 text-xs text-muted-foreground">
-          {t("size")}
-          <select
-            aria-label={t("size")}
-            className="h-8 rounded-4xl border border-input bg-input/30 px-2 text-sm text-foreground"
-            value={String(scaleValue)}
-            disabled={!editor}
-            onChange={(event) => {
-              const next = Number(event.target.value);
-              if (next === 1) editor?.chain().focus().unsetMark("scale").run();
-              else editor?.chain().focus().setMark("scale", { scale: next }).run();
-            }}
-          >
-            {SCALE_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {Math.round(option * 100)}%
-              </option>
-            ))}
-          </select>
-        </label>
       </div>
-      <div className="rounded-2xl border border-input bg-input/30">
+      <div className="rounded-xl border border-input bg-input/30 transition-colors focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50">
         <EditorContent editor={editor} />
       </div>
     </div>

@@ -202,7 +202,6 @@ const catalog = {
     underline: "Souligné",
     textColor: "Couleur du texte",
     clearColor: "Effacer la couleur",
-    size: "Taille",
     font: "Police",
     fontSans: "Sans",
     fontMono: "Mono",

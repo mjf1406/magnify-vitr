@@ -200,7 +200,6 @@ const catalog = {
     underline: "Sottolineato",
     textColor: "Colore del testo",
     clearColor: "Rimuovi colore",
-    size: "Dimensione",
     font: "Font",
     fontSans: "Sans",
     fontMono: "Mono",

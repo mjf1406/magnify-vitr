@@ -1,7 +1,7 @@
 /** @format */
 
-import logoBig from "/vitr/logo-big.webp";
-import logoSmall from "/vitr/logo-small.webp";
+const logoBig = "/vitr/logo-big.webp";
+const logoSmall = "/vitr/logo-small.webp";
 import { APP_CONFIG } from "@/config/app";
 import { ImageSkeleton } from "../ui/image-skeleton";
 

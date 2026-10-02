@@ -199,7 +199,6 @@ const catalog = {
     underline: "下線",
     textColor: "文字色",
     clearColor: "色を消す",
-    size: "サイズ",
     font: "フォント",
     fontSans: "サンセリフ",
     fontMono: "等幅",

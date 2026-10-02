@@ -199,7 +199,6 @@ const en = {
     underline: "Underline",
     textColor: "Text color",
     clearColor: "Clear color",
-    size: "Size",
     font: "Font",
     fontSans: "Sans",
     fontMono: "Mono",

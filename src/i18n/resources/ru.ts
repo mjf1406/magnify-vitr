@@ -201,7 +201,6 @@ const catalog = {
     underline: "Подчёркнутый",
     textColor: "Цвет текста",
     clearColor: "Убрать цвет",
-    size: "Размер",
     font: "Шрифт",
     fontSans: "Без засечек",
     fontMono: "Моно",

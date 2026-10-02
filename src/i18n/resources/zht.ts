@@ -196,7 +196,6 @@ const catalog = {
     underline: "底線",
     textColor: "文字顏色",
     clearColor: "清除顏色",
-    size: "大小",
     font: "字型",
     fontSans: "無襯線",
     fontMono: "等寬",

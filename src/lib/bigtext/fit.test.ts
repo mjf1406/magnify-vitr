@@ -42,6 +42,64 @@ describe("fitText", () => {
     expect(fitted.fontSize).toBe(90);
   });
 
+  test("keeps punctuation on the same line as the word it is attached to", () => {
+    const fitted = fitText({
+      doc: {
+        paragraphs: [
+          {
+            runs: [
+              { text: "AA" },
+              { text: ",", color: "#94a3b8" },
+              { text: " " },
+              { text: "BB" },
+              { text: ";", color: "#94a3b8" },
+              { text: " " },
+              { text: "CC" },
+              { text: ".", color: "#94a3b8" },
+            ],
+          },
+        ],
+      },
+      maxWidth: 50,
+      maxHeight: 200,
+      padding: 0,
+      lineHeight: 1,
+      fontFamily: "sans",
+      measure,
+    });
+    const lines = fitted.lines.map((line) =>
+      line.fragments.map((fragment) => fragment.text).join(""),
+    );
+    expect(
+      lines.some((line) => line.trim() === "," || line.trim() === ";" || line.trim() === "."),
+    ).toBe(false);
+    expect(lines.map((line) => line.trim())).toEqual(["AA,", "BB;", "CC."]);
+  });
+
+  test("keeps an opening mark with the word that follows it", () => {
+    const fitted = fitText({
+      doc: {
+        paragraphs: [
+          {
+            runs: [
+              { text: "(", color: "#38bdf8" },
+              { text: "AA" },
+              { text: ")", color: "#38bdf8" },
+            ],
+          },
+        ],
+      },
+      maxWidth: 50,
+      maxHeight: 100,
+      padding: 0,
+      lineHeight: 1,
+      fontFamily: "sans",
+      measure,
+    });
+    expect(fitted.lines).toHaveLength(1);
+    expect(fitted.lines[0]?.fragments.map((fragment) => fragment.text).join("")).toBe("(AA)");
+  });
+
   test("wraps words when a single line would be too tall", () => {
     const fitted = fitText({
       doc: doc("AA AA"),

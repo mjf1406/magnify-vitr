@@ -1,25 +1,8 @@
-import { lazy, Suspense, type ComponentType } from "react";
-
 /**
- * Dev-only router inspector.
- * Gated on `import.meta.env.DEV` so Vite/Rolldown tree-shakes the package from
- * production builds (`vp build`).
+ * Router inspector is off.
+ * Re-enable by lazy-loading `TanStackRouterDevtools` from
+ * `@tanstack/react-router-devtools` behind `import.meta.env.DEV`.
  */
-const TanStackRouterDevtools: ComponentType | null = import.meta.env.DEV
-  ? lazy(() =>
-      import("@tanstack/react-router-devtools").then((m) => ({
-        default: m.TanStackRouterDevtools,
-      })),
-    )
-  : null;
-
 export function RouterDevtools() {
-  if (!TanStackRouterDevtools) {
-    return null;
-  }
-  return (
-    <Suspense fallback={null}>
-      <TanStackRouterDevtools />
-    </Suspense>
-  );
+  return null;
 }

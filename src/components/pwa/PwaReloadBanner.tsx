@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { InfoIcon } from "lucide-react";
 
+import { Alert, AlertAction, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { usePwaRegister } from "@/hooks/usePwaRegister";
 import { cn } from "@/lib/utils";
@@ -14,47 +15,38 @@ export type PwaReloadBannerViewProps = {
 /**
  * Presentational PWA update banner (layout + copy).
  * Used by the live banner and the /ui playground.
- * Surface colors match info toast variants in toast.tsx.
  */
 export function PwaReloadBannerView({ onReload, onLater, className }: PwaReloadBannerViewProps) {
   const { t } = useTranslation("common");
 
   return (
-    <div
-      role="alert"
+    <Alert
       aria-live="assertive"
       className={cn(
-        "border-b border-cyan-600 bg-[color-mix(in_oklab,var(--background)_80%,var(--color-cyan-500)_20%)] px-4 py-3",
-        "dark:border-cyan-400",
+        "flex flex-col items-start gap-3 rounded-none border-x-0 border-t-0 pr-4! sm:flex-row sm:items-center sm:justify-between",
         className,
       )}
     >
-      <div className="mx-auto flex max-w-4xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-        <div className="flex min-w-0 items-start gap-3">
-          <span className="mt-0.5 shrink-0 text-cyan-700 dark:text-cyan-400">
-            <InfoIcon className="size-5" aria-hidden="true" />
-          </span>
-          <div className="min-w-0 space-y-1">
-            <p className="text-sm font-medium leading-tight">{t("pwaUpdateTitle")}</p>
-            <p className="text-sm text-muted-foreground">{t("pwaUpdateDescription")}</p>
-          </div>
-        </div>
-        <div className="flex shrink-0 flex-col gap-2 sm:flex-row sm:items-center">
-          <Button type="button" size="sm" className="w-full sm:w-auto" onClick={onReload}>
-            {t("pwaUpdateReload")}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="w-full sm:w-auto"
-            onClick={onLater}
-          >
-            {t("pwaUpdateLater")}
-          </Button>
-        </div>
+      <InfoIcon aria-hidden="true" />
+      <div className="min-w-0">
+        <AlertTitle>{t("pwaUpdateTitle")}</AlertTitle>
+        <AlertDescription>{t("pwaUpdateDescription")}</AlertDescription>
       </div>
-    </div>
+      <AlertAction className="static flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+        <Button type="button" size="sm" className="w-full sm:w-auto" onClick={onReload}>
+          {t("pwaUpdateReload")}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="w-full sm:w-auto"
+          onClick={onLater}
+        >
+          {t("pwaUpdateLater")}
+        </Button>
+      </AlertAction>
+    </Alert>
   );
 }
 

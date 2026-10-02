@@ -1,5 +1,11 @@
-import type { FontFamilyId, RichDoc, TextRun } from "./types";
-import { FONT_STACKS } from "./types";
+import {
+  FONT_STACKS,
+  SCALE_MAX,
+  SCALE_MIN,
+  type FontFamilyId,
+  type RichDoc,
+  type TextRun,
+} from "./types";
 
 /** Width of `text` drawn with a canvas font string, in CSS pixels. */
 export type MeasureWidth = (text: string, font: string) => number;
@@ -45,7 +51,7 @@ function referenceFont(family: string, bold?: boolean, italic?: boolean): string
 
 function scaleOf(run: TextRun): number {
   if (run.scale === undefined || !Number.isFinite(run.scale)) return 1;
-  return Math.min(4, Math.max(0.5, run.scale));
+  return Math.min(SCALE_MAX, Math.max(SCALE_MIN, run.scale));
 }
 
 function sameLook(left: FittedFragment, right: FittedFragment): boolean {
@@ -116,6 +122,27 @@ function expandParagraphs(doc: RichDoc): TextRun[][] {
   return paragraphs.length > 0 ? paragraphs : [[]];
 }
 
+type AtomGroup = {
+  atoms: Atom[];
+  unitWidth: number;
+  isSpace: boolean;
+};
+
+/** Break only at spaces, so punctuation stays with the word it is attached to. */
+function groupAtoms(atoms: Atom[]): AtomGroup[] {
+  const groups: AtomGroup[] = [];
+  for (const atom of atoms) {
+    const previous = groups[groups.length - 1];
+    if (!atom.isSpace && previous && !previous.isSpace) {
+      previous.atoms.push(atom);
+      previous.unitWidth += atom.unitWidth;
+      continue;
+    }
+    groups.push({ atoms: [atom], unitWidth: atom.unitWidth, isSpace: atom.isSpace });
+  }
+  return groups;
+}
+
 type LayoutAttempt = { ok: true; lines: FittedLine[] } | { ok: false };
 
 function layoutAt(
@@ -144,11 +171,12 @@ function layoutAt(
       maxScale = 1;
     };
 
-    for (const atom of atoms) {
-      const atomWidth = atom.unitWidth * fontSize;
-      if (atom.isSpace) {
-        if (current.length === 0) continue;
-        if (width + atomWidth > innerWidth + WIDTH_EPSILON) {
+    for (const group of groupAtoms(atoms)) {
+      const groupWidth = group.unitWidth * fontSize;
+      if (group.isSpace) {
+        const atom = group.atoms[0];
+        if (!atom || current.length === 0) continue;
+        if (width + groupWidth > innerWidth + WIDTH_EPSILON) {
           commit();
         } else {
           current.push({
@@ -159,22 +187,24 @@ function layoutAt(
             underline: atom.underline,
             scale: atom.scale,
           });
-          width += atomWidth;
+          width += groupWidth;
         }
         continue;
       }
-      if (atomWidth > innerWidth + WIDTH_EPSILON) return { ok: false };
-      if (current.length > 0 && width + atomWidth > innerWidth + WIDTH_EPSILON) commit();
-      current.push({
-        text: atom.text,
-        color: atom.color,
-        bold: atom.bold,
-        italic: atom.italic,
-        underline: atom.underline,
-        scale: atom.scale,
-      });
-      width += atomWidth;
-      maxScale = Math.max(maxScale, atom.scale);
+      if (groupWidth > innerWidth + WIDTH_EPSILON) return { ok: false };
+      if (current.length > 0 && width + groupWidth > innerWidth + WIDTH_EPSILON) commit();
+      for (const atom of group.atoms) {
+        current.push({
+          text: atom.text,
+          color: atom.color,
+          bold: atom.bold,
+          italic: atom.italic,
+          underline: atom.underline,
+          scale: atom.scale,
+        });
+        width += atom.unitWidth * fontSize;
+        maxScale = Math.max(maxScale, atom.scale);
+      }
     }
 
     if (current.length > 0) commit();

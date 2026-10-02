@@ -1,6 +1,7 @@
 import { CloudOff, CloudUpload } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
@@ -19,10 +20,16 @@ export function ConnectionStatus() {
     return (
       <Popover>
         <PopoverTrigger
-          aria-label={t("connectionOffline")}
-          className="inline-flex size-9 animate-pulse items-center justify-center rounded-full bg-destructive/15 text-destructive outline-none focus-visible:ring-2 focus-visible:ring-destructive"
+          render={
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={t("connectionOffline")}
+              className="animate-pulse text-destructive"
+            />
+          }
         >
-          <CloudOff className="size-5" />
+          <CloudOff />
         </PopoverTrigger>
         <PopoverContent align="end">
           <PopoverHeader>
@@ -38,10 +45,16 @@ export function ConnectionStatus() {
     return (
       <Popover>
         <PopoverTrigger
-          aria-label={t("connectionSyncing")}
-          className="inline-flex size-9 animate-pulse items-center justify-center rounded-full bg-amber-500/15 text-amber-600 outline-none focus-visible:ring-2 focus-visible:ring-amber-500 dark:text-amber-400"
+          render={
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={t("connectionSyncing")}
+              className="animate-pulse"
+            />
+          }
         >
-          <CloudUpload className="size-5" />
+          <CloudUpload />
         </PopoverTrigger>
         <PopoverContent align="end">
           <PopoverHeader>

@@ -5,10 +5,19 @@ import { Download, Pencil, Trash2 } from "lucide-react";
 import { FileDropzone } from "@/components/upload/FileDropzone";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
+import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from "@/components/ui/item";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
-import { Field, FieldLabel } from "@/components/ui/field";
 import { useDeleteFile } from "@/hooks/files/useDeleteFile";
 import { useRenameFile } from "@/hooks/files/useRenameFile";
 import { useUserFiles, type UserFilePublic } from "@/hooks/files/useUserFiles";
@@ -28,19 +37,19 @@ function FileRow({ file }: { file: UserFilePublic }) {
   const [name, setName] = useState(file.name);
 
   return (
-    <li className="flex flex-col gap-3 rounded-lg border border-border p-4 sm:flex-row sm:items-center sm:justify-between">
-      <div className="min-w-0 flex-1">
-        <p className="truncate font-medium">{file.name}</p>
-        <p className="text-xs text-muted-foreground">
+    <Item variant="outline">
+      <ItemContent className="min-w-0">
+        <ItemTitle className="max-w-full">{file.name}</ItemTitle>
+        <ItemDescription>
           {formatBytes(file.size)} · {file.contentType} ·{" "}
           {t(`visibility${file.visibility === "public" ? "Public" : "Private"}`)}
-        </p>
-      </div>
-      <div className="flex flex-wrap items-center gap-2">
+        </ItemDescription>
+      </ItemContent>
+      <ItemActions className="flex-wrap">
         <Input
           value={name}
           onChange={(event) => setName(event.target.value)}
-          className="h-9 w-40"
+          className="w-40"
           aria-label={t("nameLabel")}
         />
         <Button
@@ -52,7 +61,7 @@ function FileRow({ file }: { file: UserFilePublic }) {
             void renameFile.mutateAsync({ fileId: file._id, name });
           }}
         >
-          <Pencil />
+          <Pencil data-icon="inline-start" />
           {t("rename")}
         </Button>
         {file.url ? (
@@ -65,7 +74,7 @@ function FileRow({ file }: { file: UserFilePublic }) {
               <a href={file.url} target="_blank" rel="noopener noreferrer" download={file.name} />
             }
           >
-            <Download />
+            <Download data-icon="inline-start" />
             {t("download")}
           </Button>
         ) : null}
@@ -78,11 +87,11 @@ function FileRow({ file }: { file: UserFilePublic }) {
             void deleteFile.mutateAsync({ fileId: file._id, storageId: file.fileId });
           }}
         >
-          <Trash2 />
+          <Trash2 data-icon="inline-start" />
           {t("delete")}
         </Button>
-      </div>
-    </li>
+      </ItemActions>
+    </Item>
   );
 }
 
@@ -128,16 +137,18 @@ export function FilesPage() {
           <Skeleton className="h-20 w-full" />
         </div>
       ) : sorted.length === 0 ? (
-        <div className="rounded-lg border border-dashed p-8 text-center">
-          <p className="font-medium">{t("emptyTitle")}</p>
-          <p className="mt-1 text-sm text-muted-foreground">{t("emptyDescription")}</p>
-        </div>
+        <Empty className="border">
+          <EmptyHeader>
+            <EmptyTitle>{t("emptyTitle")}</EmptyTitle>
+            <EmptyDescription>{t("emptyDescription")}</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       ) : (
-        <ul className="flex flex-col gap-3">
+        <ItemGroup>
           {sorted.map((file) => (
             <FileRow key={file._id} file={file} />
           ))}
-        </ul>
+        </ItemGroup>
       )}
     </div>
   );

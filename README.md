@@ -85,7 +85,7 @@ bunx instant-cli push perms
 
 Then:
 
-1. Replace `public/vitr/logo-big.webp` and `public/vitr/logo-small.webp`.
+1. Replace `public/brand/logo/magnitext-logo.webp`, then run `bun run brand:icons` (favicon, in-app logos, PWA icons).
 2. Add Google OAuth origins (`http://localhost:5173` and your app URL) and Instant’s callback URL.
 3. Tick the remaining items in [`CLONE_CHECKLIST.md`](./CLONE_CHECKLIST.md).
 

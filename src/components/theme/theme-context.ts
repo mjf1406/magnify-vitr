@@ -2,13 +2,17 @@ import { createContext, useContext } from "react";
 
 export type Theme = "dark" | "light" | "system";
 
+export type ResolvedTheme = "light" | "dark";
+
 export type ThemeProviderState = {
   theme: Theme;
+  resolvedTheme: ResolvedTheme;
   setTheme: (theme: Theme) => void;
 };
 
 const initialState: ThemeProviderState = {
   theme: "system",
+  resolvedTheme: "light",
   setTheme: () => null,
 };
 

@@ -76,10 +76,47 @@ export const FONT_STACKS: Record<FontFamilyId, { css: string; canvas: string }> 
   serif: { css: "Georgia, serif", canvas: "Georgia" },
 };
 
-export const SCALE_OPTIONS = [0.75, 1, 1.25, 1.5, 2] as const;
+export const SCALE_MIN = 0.5;
+export const SCALE_MAX = 4;
+
+export function clampTextScale(value: number): number {
+  if (!Number.isFinite(value)) return 1;
+  return Math.min(SCALE_MAX, Math.max(SCALE_MIN, value));
+}
+
+/** Canvas colors that track the app theme until the user picks their own. */
+export const themePalettes = {
+  light: { backgroundColor: "#ffffff", textColor: "#111111" },
+  dark: { backgroundColor: "#111111", textColor: "#f8fafc" },
+} as const;
+
+export type ResolvedTheme = keyof typeof themePalettes;
 
 export function isHexColor(value: string): boolean {
   return HEX_COLOR.test(value);
+}
+
+export function colorsFollowTheme(
+  style: Pick<PresetStyle, "backgroundColor" | "textColor">,
+): boolean {
+  const background = style.backgroundColor.toLowerCase();
+  const text = style.textColor.toLowerCase();
+  return Object.values(themePalettes).some(
+    (palette) => palette.backgroundColor === background && palette.textColor === text,
+  );
+}
+
+/** Keep theme-paired canvas colors in sync. Custom colors stay as chosen. */
+export function applyThemeColors(style: PresetStyle, theme: ResolvedTheme): PresetStyle {
+  if (!colorsFollowTheme(style)) return style;
+  const palette = themePalettes[theme];
+  if (
+    style.backgroundColor.toLowerCase() === palette.backgroundColor &&
+    style.textColor.toLowerCase() === palette.textColor
+  ) {
+    return style;
+  }
+  return { ...style, backgroundColor: palette.backgroundColor, textColor: palette.textColor };
 }
 
 export function defaultColorRules(): ColorRule[] {
@@ -96,8 +133,8 @@ export function defaultColorRules(): ColorRule[] {
 export function defaultStyle(): PresetStyle {
   return {
     fontFamily: "sans",
-    backgroundColor: "#111111",
-    textColor: "#f8fafc",
+    backgroundColor: themePalettes.dark.backgroundColor,
+    textColor: themePalettes.dark.textColor,
     align: "center",
     padding: 32,
     lineHeight: 1.15,

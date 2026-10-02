@@ -1,5 +1,4 @@
-import type { RichDoc, TextRun } from "./types";
-import { isHexColor } from "./types";
+import { clampTextScale, isHexColor, type RichDoc, type TextRun } from "./types";
 
 type JsonRecord = Record<string, unknown>;
 
@@ -29,8 +28,9 @@ function isRecord(value: unknown): value is JsonRecord {
 }
 
 function clampScale(value: number): number | undefined {
-  if (!Number.isFinite(value) || value === 1) return undefined;
-  return Math.min(4, Math.max(0.5, value));
+  const scale = clampTextScale(value);
+  if (!Number.isFinite(value) || scale === 1) return undefined;
+  return scale;
 }
 
 function marksForRun(run: TextRun): TiptapMark[] | undefined {

@@ -196,7 +196,6 @@ const catalog = {
     underline: "ขีดเส้นใต้",
     textColor: "สีข้อความ",
     clearColor: "ล้างสี",
-    size: "ขนาด",
     font: "แบบอักษร",
     fontSans: "แซนส์",
     fontMono: "โมโน",

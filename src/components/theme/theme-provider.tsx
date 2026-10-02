@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
 
-import { ThemeProviderContext, type Theme } from "@/components/theme/theme-context";
+import {
+  ThemeProviderContext,
+  type ResolvedTheme,
+  type Theme,
+} from "@/components/theme/theme-context";
 import { STORAGE_KEYS } from "@/lib/storageKeys";
+
+function resolveTheme(theme: Theme): ResolvedTheme {
+  if (theme !== "system") return theme;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -18,26 +27,28 @@ export function ThemeProvider({
   const [theme, setTheme] = useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
   );
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => resolveTheme(theme));
 
   useEffect(() => {
     const root = window.document.documentElement;
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
 
-    root.classList.remove("light", "dark");
+    const apply = () => {
+      const next = resolveTheme(theme);
+      root.classList.remove("light", "dark");
+      root.classList.add(next);
+      setResolvedTheme(next);
+    };
 
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
-
-      root.classList.add(systemTheme);
-      return;
-    }
-
-    root.classList.add(theme);
+    apply();
+    if (theme !== "system") return;
+    media.addEventListener("change", apply);
+    return () => media.removeEventListener("change", apply);
   }, [theme]);
 
   const value = {
     theme,
+    resolvedTheme,
     setTheme: (theme: Theme) => {
       localStorage.setItem(storageKey, theme);
       setTheme(theme);
