@@ -1,0 +1,20 @@
+---
+description: InstantDB data hooks — useQuery in feature hooks, transact for client writes
+alwaysApply: true
+---
+
+# InstantDB Data Hooks
+
+- Access Instant through a single schema-typed client (`src/lib/instant/db.ts`). Always pass `schema` to `init`.
+- Encapsulate every Instant query or write in a dedicated custom hook; components must not call `db.useQuery` / `db.transact` directly.
+- Reads use `db.useQuery` inside the existing per-feature hooks. Keep hook names and `{ data, isPending }` return shapes stable.
+- Client writes use `db.transact` (optimistic with automatic rollback). There is no admin server and no admin-token write path.
+- Mutations that need pending UI use `useAsyncAction`. Close Credenza/Dialog immediately on submit; reopen only on failure.
+- Index every field used in Instant `where` / `order` (queries error otherwise).
+- Preserve strict TypeScript types; use `InstaQLEntity<AppSchema, "entity">` or `Id<"entity">` from `@/lib/ids`. Do not use `any`.
+- Do not introduce TanStack Query for Instant data.
+
+## Reference examples
+
+- Instant client: `src/lib/instant/db.ts`
+- Async mutation: `src/hooks/useAsyncAction.ts`

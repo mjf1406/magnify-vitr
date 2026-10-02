@@ -1,0 +1,41 @@
+/**
+ * TEMPLATE: Single brand config — change these when cloning (`bun run post-clone`).
+ * Brand images: `public/vitr/` (`logo-big.webp`, `logo-small.webp`).
+ * `name` is never translated — i18n uses it via defaultVariables.appName.
+ */
+export const APP_CONFIG = {
+  name: "vitr",
+  /** Storage keys (`${slug}-…` via src/lib/storageKeys.ts) and package-name check. */
+  slug: "vitr",
+  /** Appended after name in the document title (`Name | suffix`). */
+  titleSuffix: "App",
+  /** Canonical app origin. */
+  appUrl: "https://app.example.com",
+  marketingUrl: "https://www.example.com",
+  privacyUrl: "https://www.example.com/privacy-policy",
+  termsUrl: "https://www.example.com/terms-and-conditions",
+  cookieUrl: "https://www.example.com/cookie-policy",
+  changeLog: "https://github.com/mjf1406/vitr",
+  roadMap: "https://github.com/mjf1406/vitr",
+  github: "https://github.com/mjf1406/vitr",
+  /** Browser chrome — hex (meta theme-color is unreliable with oklch). */
+  themeColors: {
+    light: "#ffffff",
+    dark: "#252525",
+  },
+  /** Keep aligned with page background. */
+  backgroundColors: {
+    light: "#ffffff",
+    dark: "#252525",
+  },
+  /**
+   * Upload size limits (client-side validation).
+   */
+  uploads: {
+    maxSizeBytes: {
+      images: 2 * 1024 * 1024,
+      documents: 500 * 1024,
+      audio: 5 * 1024 * 1024,
+    },
+  },
+} as const;

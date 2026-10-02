@@ -1,0 +1,26 @@
+# Single-user Instant PWA. Instant itself is hosted elsewhere.
+#   cp example.env .env
+#   docker compose up -d --build
+# Cloudflare Tunnel should point the app hostname at WEB_PORT.
+
+name: vitr
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8088}:80"
+    environment:
+      VITE_INSTANT_APP_ID: ${VITE_INSTANT_APP_ID:-}
+      VITE_INSTANT_API_URI: ${VITE_INSTANT_API_URI:-}
+      VITE_INSTANT_WEBSOCKET_URI: ${VITE_INSTANT_WEBSOCKET_URI:-}
+      VITE_INSTANT_GOOGLE_CLIENT_NAME: ${VITE_INSTANT_GOOGLE_CLIENT_NAME:-google-web}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

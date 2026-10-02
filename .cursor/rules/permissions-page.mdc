@@ -1,0 +1,39 @@
+---
+description: Single-user access is PUBLIC_READ plus the allowed Google email
+alwaysApply: true
+---
+
+# Access (Allowed Email + PUBLIC_READ)
+
+There is **no** Permissions page, role catalog, or per-permission override machinery.
+
+Access is:
+
+1. Instant CEL in `instant.perms.ts`.
+2. The allowed Google account in `shared/access.ts`.
+3. A UI guard (`AllowedEmailGuard`) that signs out any other signed-in email.
+
+## Source of truth
+
+- Allowed email: `ALLOWED_EMAIL` in `shared/access.ts`.
+- Access mode: `PUBLIC_READ` in `instant.perms.ts`.
+- CEL rules: `instant.perms.ts`.
+
+## Modes
+
+- **Private** (`PUBLIC_READ = false`): every `view` / write requires the allowed account.
+- **Public-read** (`PUBLIC_READ = true`): anonymous visitors can read published file records and `$files` under `public/`. User-scoped paths (`users/{id}/…`) stay private. `create` / `update` / `delete` stay allowed-account-only.
+
+To switch a clone later, flip `PUBLIC_READ` and re-push perms. Do not rewrite the rest of the rules.
+
+## When adding a new capability
+
+1. Express readable data in CEL. Keep writes limited to `auth.email == ALLOWED_EMAIL`.
+2. Gate admin UI (Files, Account, Settings) behind `_authenticated` + the email guard.
+3. **Do not** add roles, grantable-permissions UI, override rows, or an admin-server write path.
+
+## If unsure
+
+Ask before implementing, e.g.:
+
+> New capability X — private-only view, or public-read when `PUBLIC_READ` is true? Writes: allowed email only?
