@@ -1,8 +1,8 @@
+import { useCallback } from "react";
 import { id } from "@instantdb/react";
 import { useTranslation } from "react-i18next";
 
 import { toast } from "@/components/ui/toast-manager";
-import { useAsyncAction } from "@/hooks/useAsyncAction";
 import { db } from "@/lib/instant/db";
 import { messageFromError } from "@/lib/errors/convexError";
 import type { PresetStyle, RichDoc } from "@/lib/bigtext/types";
@@ -21,13 +21,19 @@ export function useSavePreset() {
   const { t } = useTranslation("bigtext");
   const { t: tCommon } = useTranslation("common");
 
-  return useAsyncAction(
-    async (args: SavePresetArgs) => {
+  return useCallback(
+    (args: SavePresetArgs) => {
       if (!user || !isAllowedEmail(user.email)) {
-        throw new Error(t("signInToSave"));
+        const error = new Error(t("signInToSave"));
+        toast.add({ title: error.message, type: "error" });
+        throw error;
       }
       const name = args.name.trim();
-      if (!name) throw new Error(t("nameRequired"));
+      if (!name) {
+        const error = new Error(t("nameRequired"));
+        toast.add({ title: error.message, type: "error" });
+        throw error;
+      }
       const now = Date.now();
       const presetId = args.id ?? id();
       const base = {
@@ -36,22 +42,19 @@ export function useSavePreset() {
         style: args.style,
         updatedAt: now,
       };
-      if (args.id) {
-        await db.transact(db.tx.presets[presetId].update(base));
-      } else {
-        await db.transact(
-          db.tx.presets[presetId].update({ ...base, createdAt: now }).link({ owner: user.id }),
-        );
-      }
-      return presetId;
-    },
-    {
-      onError: (error) => {
+      const tx = args.id
+        ? db.tx.presets[presetId].update(base)
+        : db.tx.presets[presetId].update({ ...base, createdAt: now }).link({ owner: user.id });
+
+      void db.transact(tx).catch((error: unknown) => {
         toast.add({
           title: messageFromError(error, t("saveFailed"), tCommon("rateLimited")),
           type: "error",
         });
-      },
+      });
+
+      return presetId;
     },
+    [t, tCommon, user],
   );
 }

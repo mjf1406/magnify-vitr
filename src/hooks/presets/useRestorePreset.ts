@@ -1,4 +1,5 @@
-import { useAsyncAction } from "@/hooks/useAsyncAction";
+import { useCallback } from "react";
+
 import { db } from "@/lib/instant/db";
 import type { PresetStyle, RichDoc } from "@/lib/bigtext/types";
 import type { Id } from "@/lib/ids";
@@ -17,20 +18,25 @@ export type RestorePresetArgs = {
 export function useRestorePreset() {
   const { user } = db.useAuth();
 
-  return useAsyncAction(async (args: RestorePresetArgs) => {
-    if (!user || !isAllowedEmail(user.email)) {
-      throw new Error("Not signed in");
-    }
-    await db.transact(
-      db.tx.presets[args.id]
-        .update({
-          name: args.name,
-          doc: args.doc,
-          style: args.style,
-          createdAt: args.createdAt,
-          updatedAt: args.updatedAt,
-        })
-        .link({ owner: user.id }),
-    );
-  });
+  return useCallback(
+    (args: RestorePresetArgs) => {
+      if (!user || !isAllowedEmail(user.email)) {
+        return Promise.reject(new Error("Not signed in"));
+      }
+      return db
+        .transact(
+          db.tx.presets[args.id]
+            .update({
+              name: args.name,
+              doc: args.doc,
+              style: args.style,
+              createdAt: args.createdAt,
+              updatedAt: args.updatedAt,
+            })
+            .link({ owner: user.id }),
+        )
+        .then(() => undefined);
+    },
+    [user],
+  );
 }

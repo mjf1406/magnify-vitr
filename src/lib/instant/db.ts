@@ -33,6 +33,7 @@ const websocketURI = resolveWebsocketUri(apiURI);
 export const db = init({
   appId: resolveAppId(),
   schema,
+  devtool: false,
   ...(apiURI ? { apiURI } : {}),
   ...(websocketURI ? { websocketURI } : {}),
 });

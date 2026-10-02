@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { PencilIcon, SlidersHorizontalIcon } from "lucide-react";
+import { BookmarkIcon, PencilIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { useTheme } from "@/components/theme/theme-context";
@@ -41,6 +41,7 @@ export function BigTextPage() {
   const [name, setName] = useState("");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [textOpen, setTextOpen] = useState(false);
+  const [presetsOpen, setPresetsOpen] = useState(false);
   const [selectAllToken, setSelectAllToken] = useState(0);
   const editorRef = useRef<TextEditorHandle>(null);
   const docRef = useRef(doc);
@@ -66,6 +67,7 @@ export function BigTextPage() {
     setName(preset.name);
     setActiveId(preset.id);
     editorRef.current?.load(preset.doc);
+    setPresetsOpen(false);
   }
 
   const editor = (
@@ -84,20 +86,22 @@ export function BigTextPage() {
         rules={style.colorRules}
         onChange={(colorRules) => setStyle((current) => ({ ...current, colorRules }))}
       />
-      <PresetMenu
-        doc={doc}
-        style={style}
-        activeId={activeId}
-        name={name}
-        onNameChange={setName}
-        onLoad={loadPreset}
-        onSaved={(id, savedName) => {
-          setActiveId(id);
-          setName(savedName);
-        }}
-        onActiveCleared={() => setActiveId(null)}
-      />
     </>
+  );
+  const presets = (
+    <PresetMenu
+      doc={doc}
+      style={style}
+      activeId={activeId}
+      name={name}
+      onNameChange={setName}
+      onLoad={loadPreset}
+      onSaved={(id, savedName) => {
+        setActiveId(id);
+        setName(savedName);
+      }}
+      onActiveCleared={() => setActiveId(null)}
+    />
   );
 
   if (isMobile) {
@@ -111,7 +115,7 @@ export function BigTextPage() {
                 variant="secondary"
                 size="icon-sm"
                 aria-label={t("openControls")}
-                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 translate-x-1"
+                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 -translate-x-1/2"
               />
             }
           >
@@ -140,7 +144,7 @@ export function BigTextPage() {
                 variant="secondary"
                 size="icon-sm"
                 aria-label={t("editText")}
-                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 -translate-x-[calc(100%+0.25rem)]"
+                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 -translate-x-[calc(150%+0.25rem)]"
               />
             }
           >
@@ -155,6 +159,28 @@ export function BigTextPage() {
             </div>
           </DrawerContent>
         </Drawer>
+        <Drawer showSwipeHandle open={presetsOpen} onOpenChange={setPresetsOpen}>
+          <DrawerTrigger
+            render={
+              <Button
+                variant="secondary"
+                size="icon-sm"
+                aria-label={t("openPresets")}
+                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 translate-x-[calc(50%+0.25rem)]"
+              />
+            }
+          >
+            <BookmarkIcon />
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader className="sr-only">
+              <DrawerTitle>{t("presetsTitle")}</DrawerTitle>
+            </DrawerHeader>
+            <div className="flex min-h-0 flex-1 flex-col overflow-y-auto p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+              {presets}
+            </div>
+          </DrawerContent>
+        </Drawer>
       </div>
     );
   }
@@ -164,6 +190,7 @@ export function BigTextPage() {
       <aside className="flex flex-col gap-6 overflow-y-auto border-r border-border p-4">
         {editor}
         {styleControls}
+        {presets}
       </aside>
       <BigTextDisplay doc={doc} style={style} onChange={changeDoc} onEditEnd={finishInlineEdit} />
     </div>

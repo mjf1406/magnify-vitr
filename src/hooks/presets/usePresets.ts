@@ -29,10 +29,7 @@ export function usePresets() {
     canQuery && user
       ? {
           presets: {
-            $: {
-              where: { "owner.id": user.id },
-              order: { updatedAt: "desc" },
-            },
+            $: { order: { updatedAt: "desc" } },
           },
         }
       : null,
