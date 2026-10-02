@@ -22,12 +22,12 @@ export const APP_CONFIG = {
   /** Browser chrome — hex (meta theme-color is unreliable with oklch). */
   themeColors: {
     light: "#ffffff",
-    dark: "#252525",
+    dark: "#0a0a0a",
   },
-  /** Keep aligned with page background. */
+  /** Keep aligned with page background (`oklch(0.145 0 0)` in dark mode). */
   backgroundColors: {
     light: "#ffffff",
-    dark: "#252525",
+    dark: "#0a0a0a",
   },
   /**
    * Upload size limits (client-side validation).

@@ -192,6 +192,7 @@ const catalog = {
     previewLabel: "プレビュー",
     openControls: "操作を開く",
     editText: "テキストを編集",
+    doubleClickToEdit: "ダブルクリックで編集",
     fullscreen: "画面いっぱいに",
     exitFullscreen: "全画面を終了",
     bold: "太字",

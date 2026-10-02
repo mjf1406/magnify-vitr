@@ -195,6 +195,7 @@ const catalog = {
     previewLabel: "Aperçu",
     openControls: "Ouvrir les commandes",
     editText: "Modifier le texte",
+    doubleClickToEdit: "Double-cliquez pour modifier",
     fullscreen: "Remplir l'écran",
     exitFullscreen: "Quitter le plein écran",
     bold: "Gras",

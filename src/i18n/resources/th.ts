@@ -189,6 +189,7 @@ const catalog = {
     previewLabel: "ตัวอย่าง",
     openControls: "เปิดแผงควบคุม",
     editText: "แก้ไขข้อความ",
+    doubleClickToEdit: "ดับเบิลคลิกเพื่อแก้ไข",
     fullscreen: "เต็มหน้าจอ",
     exitFullscreen: "ออกจากเต็มหน้าจอ",
     bold: "ตัวหนา",

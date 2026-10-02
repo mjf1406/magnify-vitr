@@ -5,11 +5,23 @@ import {
   type ResolvedTheme,
   type Theme,
 } from "@/components/theme/theme-context";
+import { APP_CONFIG } from "@/config/app";
 import { STORAGE_KEYS } from "@/lib/storageKeys";
 
 function resolveTheme(theme: Theme): ResolvedTheme {
   if (theme !== "system") return theme;
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function applyChromeTheme(resolved: ResolvedTheme) {
+  const root = window.document.documentElement;
+  root.style.colorScheme = resolved;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) return;
+  meta.setAttribute(
+    "content",
+    resolved === "dark" ? APP_CONFIG.themeColors.dark : APP_CONFIG.themeColors.light,
+  );
 }
 
 type ThemeProviderProps = {
@@ -37,6 +49,7 @@ export function ThemeProvider({
       const next = resolveTheme(theme);
       root.classList.remove("light", "dark");
       root.classList.add(next);
+      applyChromeTheme(next);
       setResolvedTheme(next);
     };
 

@@ -189,6 +189,7 @@ const catalog = {
     previewLabel: "预览",
     openControls: "打开控制",
     editText: "编辑文字",
+    doubleClickToEdit: "双击即可编辑",
     fullscreen: "填满屏幕",
     exitFullscreen: "退出全屏",
     bold: "粗体",

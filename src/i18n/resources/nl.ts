@@ -194,6 +194,7 @@ const catalog = {
     previewLabel: "Voorbeeld",
     openControls: "Bediening openen",
     editText: "Tekst bewerken",
+    doubleClickToEdit: "Dubbelklik om te bewerken",
     fullscreen: "Scherm vullen",
     exitFullscreen: "Volledig scherm sluiten",
     bold: "Vet",

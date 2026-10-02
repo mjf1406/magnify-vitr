@@ -15,7 +15,10 @@ function injectAppThemeStorageKey(): Plugin {
   return {
     name: "inject-app-theme-storage-key",
     transformIndexHtml(html) {
-      return html.replaceAll("%APP_THEME_STORAGE_KEY%", themeStorageKey);
+      return html
+        .replaceAll("%APP_THEME_STORAGE_KEY%", themeStorageKey)
+        .replaceAll("%APP_THEME_COLOR_LIGHT%", APP_CONFIG.themeColors.light)
+        .replaceAll("%APP_THEME_COLOR_DARK%", APP_CONFIG.themeColors.dark);
     },
   };
 }

@@ -194,6 +194,7 @@ const catalog = {
     previewLabel: "Перегляд",
     openControls: "Відкрити панель",
     editText: "Змінити текст",
+    doubleClickToEdit: "Двічі клацніть, щоб змінити",
     fullscreen: "На весь екран",
     exitFullscreen: "Вийти з повного екрана",
     bold: "Жирний",

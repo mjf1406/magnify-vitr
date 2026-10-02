@@ -1,6 +1,4 @@
 import { EditorContent, useEditor } from "@tiptap/react";
-import { Color, TextStyle } from "@tiptap/extension-text-style";
-import StarterKit from "@tiptap/starter-kit";
 import { BoldIcon, ItalicIcon, UnderlineIcon } from "lucide-react";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,8 +9,7 @@ import { richDocToTiptap, tiptapToRichDoc } from "@/lib/bigtext/richDoc";
 import { isHexColor, type ColorRule, type RichDoc } from "@/lib/bigtext/types";
 
 import { ColorSwatch } from "./ColorSwatch";
-import { colorRulePreview } from "./colorRulePreview";
-import { Scale } from "./scaleMark";
+import { bigTextExtensions } from "./editorExtensions";
 
 export type TextEditorHandle = {
   load: (doc: RichDoc) => void;
@@ -44,30 +41,7 @@ export const TextEditor = forwardRef<TextEditorHandle, TextEditorProps>(function
   const rulesRef = useRef(rules);
   onChangeRef.current = onChange;
 
-  const extensions = useMemo(
-    () => [
-      StarterKit.configure({
-        blockquote: false,
-        bulletList: false,
-        code: false,
-        codeBlock: false,
-        dropcursor: false,
-        gapcursor: false,
-        heading: false,
-        horizontalRule: false,
-        link: false,
-        listItem: false,
-        listKeymap: false,
-        orderedList: false,
-        strike: false,
-      }),
-      TextStyle,
-      Color,
-      Scale,
-      colorRulePreview(() => rulesRef.current),
-    ],
-    [],
-  );
+  const extensions = useMemo(() => bigTextExtensions(() => rulesRef.current), []);
 
   const editor = useEditor({
     extensions,

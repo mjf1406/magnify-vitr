@@ -43,7 +43,18 @@ export function BigTextPage() {
   const [textOpen, setTextOpen] = useState(false);
   const [selectAllToken, setSelectAllToken] = useState(0);
   const editorRef = useRef<TextEditorHandle>(null);
+  const docRef = useRef(doc);
+  docRef.current = doc;
   useDraft(doc, style);
+
+  function changeDoc(next: RichDoc) {
+    docRef.current = next;
+    setDoc(next);
+  }
+
+  function finishInlineEdit() {
+    editorRef.current?.load(docRef.current);
+  }
 
   useEffect(() => {
     setStyle((current) => applyThemeColors(current, resolvedTheme));
@@ -92,7 +103,7 @@ export function BigTextPage() {
   if (isMobile) {
     return (
       <div className="relative h-svh">
-        <BigTextDisplay doc={doc} style={style} />
+        <BigTextDisplay doc={doc} style={style} onChange={changeDoc} onEditEnd={finishInlineEdit} />
         <Drawer showSwipeHandle>
           <DrawerTrigger
             render={
@@ -154,7 +165,7 @@ export function BigTextPage() {
         {editor}
         {styleControls}
       </aside>
-      <BigTextDisplay doc={doc} style={style} />
+      <BigTextDisplay doc={doc} style={style} onChange={changeDoc} onEditEnd={finishInlineEdit} />
     </div>
   );
 }

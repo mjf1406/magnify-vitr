@@ -191,6 +191,7 @@ const catalog = {
     previewLabel: "미리보기",
     openControls: "컨트롤 열기",
     editText: "텍스트 편집",
+    doubleClickToEdit: "두 번 클릭하여 편집",
     fullscreen: "화면 채우기",
     exitFullscreen: "전체 화면 종료",
     bold: "굵게",

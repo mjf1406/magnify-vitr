@@ -194,6 +194,7 @@ const catalog = {
     previewLabel: "Просмотр",
     openControls: "Открыть панель",
     editText: "Изменить текст",
+    doubleClickToEdit: "Дважды щёлкните, чтобы изменить",
     fullscreen: "На весь экран",
     exitFullscreen: "Выйти из полного экрана",
     bold: "Жирный",

@@ -10,7 +10,7 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "tsc -b && vp build",
     "check": "vp check --fix && bun run lint:fix && bun run typecheck",
     "lint": "eslint .",

@@ -192,6 +192,7 @@ const en = {
     previewLabel: "Preview",
     openControls: "Open controls",
     editText: "Edit text",
+    doubleClickToEdit: "Double-click to edit",
     fullscreen: "Fill screen",
     exitFullscreen: "Exit full screen",
     bold: "Bold",

@@ -8,254 +8,253 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as PublicRouteRouteImport } from './routes/_public/route'
-import { Route as AuthenticatedAppRouteRouteImport } from './routes/_authenticated/_app/route'
-import { Route as PublicIndexRouteImport } from './routes/_public/index'
-import { Route as PublicSplatRouteImport } from './routes/_public/$'
-import { Route as PublicAboutRouteImport } from './routes/_public/about'
-import { Route as PublicLoginRouteImport } from './routes/_public/login'
-import { Route as PublicUnauthorizedRouteImport } from './routes/_public/unauthorized'
-import { Route as AuthenticatedAppAccountRouteImport } from './routes/_authenticated/_app/account'
-import { Route as AuthenticatedAppFilesRouteImport } from './routes/_authenticated/_app/files'
-import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/_app/settings'
-import { Route as AuthenticatedAppUiRouteImport } from './routes/_authenticated/_app/ui'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as AuthenticatedRouteRouteImport } from "./routes/_authenticated/route";
+import { Route as PublicRouteRouteImport } from "./routes/_public/route";
+import { Route as AuthenticatedAppRouteRouteImport } from "./routes/_authenticated/_app/route";
+import { Route as PublicIndexRouteImport } from "./routes/_public/index";
+import { Route as PublicSplatRouteImport } from "./routes/_public/$";
+import { Route as PublicAboutRouteImport } from "./routes/_public/about";
+import { Route as PublicLoginRouteImport } from "./routes/_public/login";
+import { Route as PublicUnauthorizedRouteImport } from "./routes/_public/unauthorized";
+import { Route as AuthenticatedAppAccountRouteImport } from "./routes/_authenticated/_app/account";
+import { Route as AuthenticatedAppFilesRouteImport } from "./routes/_authenticated/_app/files";
+import { Route as AuthenticatedAppSettingsRouteImport } from "./routes/_authenticated/_app/settings";
+import { Route as AuthenticatedAppUiRouteImport } from "./routes/_authenticated/_app/ui";
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+  id: "/_authenticated",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const PublicRouteRoute = PublicRouteRouteImport.update({
-  id: '/_public',
+  id: "/_public",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthenticatedAppRouteRoute = AuthenticatedAppRouteRouteImport.update({
-  id: '/_app',
+  id: "/_app",
   getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
+} as any);
 const PublicIndexRoute = PublicIndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => PublicRouteRoute,
-} as any)
+} as any);
 const PublicSplatRoute = PublicSplatRouteImport.update({
-  id: '/$',
-  path: '/$',
+  id: "/$",
+  path: "/$",
   getParentRoute: () => PublicRouteRoute,
-} as any)
+} as any);
 const PublicAboutRoute = PublicAboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+  id: "/about",
+  path: "/about",
   getParentRoute: () => PublicRouteRoute,
-} as any)
+} as any);
 const PublicLoginRoute = PublicLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+  id: "/login",
+  path: "/login",
   getParentRoute: () => PublicRouteRoute,
-} as any)
+} as any);
 const PublicUnauthorizedRoute = PublicUnauthorizedRouteImport.update({
-  id: '/unauthorized',
-  path: '/unauthorized',
+  id: "/unauthorized",
+  path: "/unauthorized",
   getParentRoute: () => PublicRouteRoute,
-} as any)
+} as any);
 const AuthenticatedAppAccountRoute = AuthenticatedAppAccountRouteImport.update({
-  id: '/account',
-  path: '/account',
+  id: "/account",
+  path: "/account",
   getParentRoute: () => AuthenticatedAppRouteRoute,
-} as any)
+} as any);
 const AuthenticatedAppFilesRoute = AuthenticatedAppFilesRouteImport.update({
-  id: '/files',
-  path: '/files',
+  id: "/files",
+  path: "/files",
   getParentRoute: () => AuthenticatedAppRouteRoute,
-} as any)
-const AuthenticatedAppSettingsRoute =
-  AuthenticatedAppSettingsRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => AuthenticatedAppRouteRoute,
-  } as any)
+} as any);
+const AuthenticatedAppSettingsRoute = AuthenticatedAppSettingsRouteImport.update({
+  id: "/settings",
+  path: "/settings",
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any);
 const AuthenticatedAppUiRoute = AuthenticatedAppUiRouteImport.update({
-  id: '/ui',
-  path: '/ui',
+  id: "/ui",
+  path: "/ui",
   getParentRoute: () => AuthenticatedAppRouteRoute,
-} as any)
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof PublicIndexRoute
-  '/$': typeof PublicSplatRoute
-  '/about': typeof PublicAboutRoute
-  '/login': typeof PublicLoginRoute
-  '/unauthorized': typeof PublicUnauthorizedRoute
-  '/account': typeof AuthenticatedAppAccountRoute
-  '/files': typeof AuthenticatedAppFilesRoute
-  '/settings': typeof AuthenticatedAppSettingsRoute
-  '/ui': typeof AuthenticatedAppUiRoute
+  "/": typeof PublicIndexRoute;
+  "/$": typeof PublicSplatRoute;
+  "/about": typeof PublicAboutRoute;
+  "/login": typeof PublicLoginRoute;
+  "/unauthorized": typeof PublicUnauthorizedRoute;
+  "/account": typeof AuthenticatedAppAccountRoute;
+  "/files": typeof AuthenticatedAppFilesRoute;
+  "/settings": typeof AuthenticatedAppSettingsRoute;
+  "/ui": typeof AuthenticatedAppUiRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof PublicIndexRoute
-  '/$': typeof PublicSplatRoute
-  '/about': typeof PublicAboutRoute
-  '/login': typeof PublicLoginRoute
-  '/unauthorized': typeof PublicUnauthorizedRoute
-  '/account': typeof AuthenticatedAppAccountRoute
-  '/files': typeof AuthenticatedAppFilesRoute
-  '/settings': typeof AuthenticatedAppSettingsRoute
-  '/ui': typeof AuthenticatedAppUiRoute
+  "/": typeof PublicIndexRoute;
+  "/$": typeof PublicSplatRoute;
+  "/about": typeof PublicAboutRoute;
+  "/login": typeof PublicLoginRoute;
+  "/unauthorized": typeof PublicUnauthorizedRoute;
+  "/account": typeof AuthenticatedAppAccountRoute;
+  "/files": typeof AuthenticatedAppFilesRoute;
+  "/settings": typeof AuthenticatedAppSettingsRoute;
+  "/ui": typeof AuthenticatedAppUiRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/_public': typeof PublicRouteRouteWithChildren
-  '/_authenticated/_app': typeof AuthenticatedAppRouteRouteWithChildren
-  '/_public/$': typeof PublicSplatRoute
-  '/_public/about': typeof PublicAboutRoute
-  '/_public/login': typeof PublicLoginRoute
-  '/_public/unauthorized': typeof PublicUnauthorizedRoute
-  '/_public/': typeof PublicIndexRoute
-  '/_authenticated/_app/account': typeof AuthenticatedAppAccountRoute
-  '/_authenticated/_app/files': typeof AuthenticatedAppFilesRoute
-  '/_authenticated/_app/settings': typeof AuthenticatedAppSettingsRoute
-  '/_authenticated/_app/ui': typeof AuthenticatedAppUiRoute
+  __root__: typeof rootRouteImport;
+  "/_authenticated": typeof AuthenticatedRouteRouteWithChildren;
+  "/_public": typeof PublicRouteRouteWithChildren;
+  "/_authenticated/_app": typeof AuthenticatedAppRouteRouteWithChildren;
+  "/_public/$": typeof PublicSplatRoute;
+  "/_public/about": typeof PublicAboutRoute;
+  "/_public/login": typeof PublicLoginRoute;
+  "/_public/unauthorized": typeof PublicUnauthorizedRoute;
+  "/_public/": typeof PublicIndexRoute;
+  "/_authenticated/_app/account": typeof AuthenticatedAppAccountRoute;
+  "/_authenticated/_app/files": typeof AuthenticatedAppFilesRoute;
+  "/_authenticated/_app/settings": typeof AuthenticatedAppSettingsRoute;
+  "/_authenticated/_app/ui": typeof AuthenticatedAppUiRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-    | '/'
-    | '/$'
-    | '/about'
-    | '/login'
-    | '/unauthorized'
-    | '/account'
-    | '/files'
-    | '/settings'
-    | '/ui'
-  fileRoutesByTo: FileRoutesByTo
+    | "/"
+    | "/$"
+    | "/about"
+    | "/login"
+    | "/unauthorized"
+    | "/account"
+    | "/files"
+    | "/settings"
+    | "/ui";
+  fileRoutesByTo: FileRoutesByTo;
   to:
-    | '/'
-    | '/$'
-    | '/about'
-    | '/login'
-    | '/unauthorized'
-    | '/account'
-    | '/files'
-    | '/settings'
-    | '/ui'
+    | "/"
+    | "/$"
+    | "/about"
+    | "/login"
+    | "/unauthorized"
+    | "/account"
+    | "/files"
+    | "/settings"
+    | "/ui";
   id:
-    | '__root__'
-    | '/_authenticated'
-    | '/_public'
-    | '/_authenticated/_app'
-    | '/_public/$'
-    | '/_public/about'
-    | '/_public/login'
-    | '/_public/unauthorized'
-    | '/_public/'
-    | '/_authenticated/_app/account'
-    | '/_authenticated/_app/files'
-    | '/_authenticated/_app/settings'
-    | '/_authenticated/_app/ui'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/_authenticated"
+    | "/_public"
+    | "/_authenticated/_app"
+    | "/_public/$"
+    | "/_public/about"
+    | "/_public/login"
+    | "/_public/unauthorized"
+    | "/_public/"
+    | "/_authenticated/_app/account"
+    | "/_authenticated/_app/files"
+    | "/_authenticated/_app/settings"
+    | "/_authenticated/_app/ui";
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  PublicRouteRoute: typeof PublicRouteRouteWithChildren
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren;
+  PublicRouteRoute: typeof PublicRouteRouteWithChildren;
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_public': {
-      id: '/_public'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof PublicRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/_app': {
-      id: '/_authenticated/_app'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedAppRouteRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_public/': {
-      id: '/_public/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof PublicIndexRouteImport
-      parentRoute: typeof PublicRouteRoute
-    }
-    '/_public/$': {
-      id: '/_public/$'
-      path: '/$'
-      fullPath: '/$'
-      preLoaderRoute: typeof PublicSplatRouteImport
-      parentRoute: typeof PublicRouteRoute
-    }
-    '/_public/about': {
-      id: '/_public/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof PublicAboutRouteImport
-      parentRoute: typeof PublicRouteRoute
-    }
-    '/_public/login': {
-      id: '/_public/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof PublicLoginRouteImport
-      parentRoute: typeof PublicRouteRoute
-    }
-    '/_public/unauthorized': {
-      id: '/_public/unauthorized'
-      path: '/unauthorized'
-      fullPath: '/unauthorized'
-      preLoaderRoute: typeof PublicUnauthorizedRouteImport
-      parentRoute: typeof PublicRouteRoute
-    }
-    '/_authenticated/_app/account': {
-      id: '/_authenticated/_app/account'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof AuthenticatedAppAccountRouteImport
-      parentRoute: typeof AuthenticatedAppRouteRoute
-    }
-    '/_authenticated/_app/files': {
-      id: '/_authenticated/_app/files'
-      path: '/files'
-      fullPath: '/files'
-      preLoaderRoute: typeof AuthenticatedAppFilesRouteImport
-      parentRoute: typeof AuthenticatedAppRouteRoute
-    }
-    '/_authenticated/_app/settings': {
-      id: '/_authenticated/_app/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AuthenticatedAppSettingsRouteImport
-      parentRoute: typeof AuthenticatedAppRouteRoute
-    }
-    '/_authenticated/_app/ui': {
-      id: '/_authenticated/_app/ui'
-      path: '/ui'
-      fullPath: '/ui'
-      preLoaderRoute: typeof AuthenticatedAppUiRouteImport
-      parentRoute: typeof AuthenticatedAppRouteRoute
-    }
+    "/_authenticated": {
+      id: "/_authenticated";
+      path: "";
+      fullPath: "/";
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/_public": {
+      id: "/_public";
+      path: "";
+      fullPath: "/";
+      preLoaderRoute: typeof PublicRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/_authenticated/_app": {
+      id: "/_authenticated/_app";
+      path: "";
+      fullPath: "/";
+      preLoaderRoute: typeof AuthenticatedAppRouteRouteImport;
+      parentRoute: typeof AuthenticatedRouteRoute;
+    };
+    "/_public/": {
+      id: "/_public/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof PublicIndexRouteImport;
+      parentRoute: typeof PublicRouteRoute;
+    };
+    "/_public/$": {
+      id: "/_public/$";
+      path: "/$";
+      fullPath: "/$";
+      preLoaderRoute: typeof PublicSplatRouteImport;
+      parentRoute: typeof PublicRouteRoute;
+    };
+    "/_public/about": {
+      id: "/_public/about";
+      path: "/about";
+      fullPath: "/about";
+      preLoaderRoute: typeof PublicAboutRouteImport;
+      parentRoute: typeof PublicRouteRoute;
+    };
+    "/_public/login": {
+      id: "/_public/login";
+      path: "/login";
+      fullPath: "/login";
+      preLoaderRoute: typeof PublicLoginRouteImport;
+      parentRoute: typeof PublicRouteRoute;
+    };
+    "/_public/unauthorized": {
+      id: "/_public/unauthorized";
+      path: "/unauthorized";
+      fullPath: "/unauthorized";
+      preLoaderRoute: typeof PublicUnauthorizedRouteImport;
+      parentRoute: typeof PublicRouteRoute;
+    };
+    "/_authenticated/_app/account": {
+      id: "/_authenticated/_app/account";
+      path: "/account";
+      fullPath: "/account";
+      preLoaderRoute: typeof AuthenticatedAppAccountRouteImport;
+      parentRoute: typeof AuthenticatedAppRouteRoute;
+    };
+    "/_authenticated/_app/files": {
+      id: "/_authenticated/_app/files";
+      path: "/files";
+      fullPath: "/files";
+      preLoaderRoute: typeof AuthenticatedAppFilesRouteImport;
+      parentRoute: typeof AuthenticatedAppRouteRoute;
+    };
+    "/_authenticated/_app/settings": {
+      id: "/_authenticated/_app/settings";
+      path: "/settings";
+      fullPath: "/settings";
+      preLoaderRoute: typeof AuthenticatedAppSettingsRouteImport;
+      parentRoute: typeof AuthenticatedAppRouteRoute;
+    };
+    "/_authenticated/_app/ui": {
+      id: "/_authenticated/_app/ui";
+      path: "/ui";
+      fullPath: "/ui";
+      preLoaderRoute: typeof AuthenticatedAppUiRouteImport;
+      parentRoute: typeof AuthenticatedAppRouteRoute;
+    };
   }
 }
 
 interface AuthenticatedAppRouteRouteChildren {
-  AuthenticatedAppAccountRoute: typeof AuthenticatedAppAccountRoute
-  AuthenticatedAppFilesRoute: typeof AuthenticatedAppFilesRoute
-  AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute
-  AuthenticatedAppUiRoute: typeof AuthenticatedAppUiRoute
+  AuthenticatedAppAccountRoute: typeof AuthenticatedAppAccountRoute;
+  AuthenticatedAppFilesRoute: typeof AuthenticatedAppFilesRoute;
+  AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute;
+  AuthenticatedAppUiRoute: typeof AuthenticatedAppUiRoute;
 }
 
 const AuthenticatedAppRouteRouteChildren: AuthenticatedAppRouteRouteChildren = {
@@ -263,30 +262,30 @@ const AuthenticatedAppRouteRouteChildren: AuthenticatedAppRouteRouteChildren = {
   AuthenticatedAppFilesRoute: AuthenticatedAppFilesRoute,
   AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRoute,
   AuthenticatedAppUiRoute: AuthenticatedAppUiRoute,
-}
+};
 
-const AuthenticatedAppRouteRouteWithChildren =
-  AuthenticatedAppRouteRoute._addFileChildren(
-    AuthenticatedAppRouteRouteChildren,
-  )
+const AuthenticatedAppRouteRouteWithChildren = AuthenticatedAppRouteRoute._addFileChildren(
+  AuthenticatedAppRouteRouteChildren,
+);
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAppRouteRoute: typeof AuthenticatedAppRouteRouteWithChildren
+  AuthenticatedAppRouteRoute: typeof AuthenticatedAppRouteRouteWithChildren;
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAppRouteRoute: AuthenticatedAppRouteRouteWithChildren,
-}
+};
 
-const AuthenticatedRouteRouteWithChildren =
-  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+const AuthenticatedRouteRouteWithChildren = AuthenticatedRouteRoute._addFileChildren(
+  AuthenticatedRouteRouteChildren,
+);
 
 interface PublicRouteRouteChildren {
-  PublicSplatRoute: typeof PublicSplatRoute
-  PublicAboutRoute: typeof PublicAboutRoute
-  PublicLoginRoute: typeof PublicLoginRoute
-  PublicUnauthorizedRoute: typeof PublicUnauthorizedRoute
-  PublicIndexRoute: typeof PublicIndexRoute
+  PublicSplatRoute: typeof PublicSplatRoute;
+  PublicAboutRoute: typeof PublicAboutRoute;
+  PublicLoginRoute: typeof PublicLoginRoute;
+  PublicUnauthorizedRoute: typeof PublicUnauthorizedRoute;
+  PublicIndexRoute: typeof PublicIndexRoute;
 }
 
 const PublicRouteRouteChildren: PublicRouteRouteChildren = {
@@ -295,16 +294,14 @@ const PublicRouteRouteChildren: PublicRouteRouteChildren = {
   PublicLoginRoute: PublicLoginRoute,
   PublicUnauthorizedRoute: PublicUnauthorizedRoute,
   PublicIndexRoute: PublicIndexRoute,
-}
+};
 
-const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(
-  PublicRouteRouteChildren,
-)
+const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(PublicRouteRouteChildren);
 
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   PublicRouteRoute: PublicRouteRouteWithChildren,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
