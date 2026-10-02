@@ -193,6 +193,7 @@ const catalog = {
     editText: "텍스트 편집",
     openPresets: "프리셋 열기",
     doubleClickToEdit: "두 번 클릭하여 편집",
+    doubleClickEditTip: "텍스트 영역을 두 번 클릭하면 편집이 시작됩니다.",
     fullscreen: "화면 채우기",
     exitFullscreen: "전체 화면 종료",
     bold: "굵게",

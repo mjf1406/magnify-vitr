@@ -196,6 +196,7 @@ const catalog = {
     editText: "Змінити текст",
     openPresets: "Відкрити пресети",
     doubleClickToEdit: "Двічі клацніть, щоб змінити",
+    doubleClickEditTip: "Двічі клацніть в області тексту, щоб почати редагування.",
     fullscreen: "На весь екран",
     exitFullscreen: "Вийти з повного екрана",
     bold: "Жирний",

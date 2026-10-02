@@ -191,6 +191,7 @@ const catalog = {
     editText: "編輯文字",
     openPresets: "開啟預設",
     doubleClickToEdit: "按兩下即可編輯",
+    doubleClickEditTip: "在文字區域按兩下即可開始編輯。",
     fullscreen: "填滿畫面",
     exitFullscreen: "結束全螢幕",
     bold: "粗體",

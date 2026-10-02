@@ -194,6 +194,7 @@ const catalog = {
     editText: "テキストを編集",
     openPresets: "プリセットを開く",
     doubleClickToEdit: "ダブルクリックで編集",
+    doubleClickEditTip: "テキスト領域をダブルクリックすると編集を開始します。",
     fullscreen: "画面いっぱいに",
     exitFullscreen: "全画面を終了",
     bold: "太字",

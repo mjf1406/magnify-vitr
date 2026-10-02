@@ -191,6 +191,7 @@ const catalog = {
     editText: "แก้ไขข้อความ",
     openPresets: "เปิดค่าที่บันทึก",
     doubleClickToEdit: "ดับเบิลคลิกเพื่อแก้ไข",
+    doubleClickEditTip: "ดับเบิลคลิกในพื้นที่ข้อความเพื่อเริ่มแก้ไข",
     fullscreen: "เต็มหน้าจอ",
     exitFullscreen: "ออกจากเต็มหน้าจอ",
     bold: "ตัวหนา",

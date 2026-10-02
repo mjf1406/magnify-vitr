@@ -1,8 +1,9 @@
 import { EditorContent, useEditor } from "@tiptap/react";
-import { BoldIcon, ItalicIcon, UnderlineIcon } from "lucide-react";
+import { BoldIcon, ItalicIcon, LightbulbIcon, UnderlineIcon } from "lucide-react";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { richDocToTiptap, tiptapToRichDoc } from "@/lib/bigtext/richDoc";
@@ -110,6 +111,10 @@ export const TextEditor = forwardRef<TextEditorHandle, TextEditorProps>(function
 
   return (
     <div className="flex flex-col gap-2">
+      <Alert variant="tip" role="note">
+        <LightbulbIcon />
+        <AlertDescription>{t("doubleClickEditTip")}</AlertDescription>
+      </Alert>
       <div
         className="flex flex-wrap items-center gap-2"
         role="toolbar"

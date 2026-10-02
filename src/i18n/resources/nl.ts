@@ -196,6 +196,7 @@ const catalog = {
     editText: "Tekst bewerken",
     openPresets: "Voorinstellingen openen",
     doubleClickToEdit: "Dubbelklik om te bewerken",
+    doubleClickEditTip: "Dubbelklik in het tekstgebied om te beginnen met bewerken.",
     fullscreen: "Scherm vullen",
     exitFullscreen: "Volledig scherm sluiten",
     bold: "Vet",

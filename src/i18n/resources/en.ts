@@ -194,6 +194,7 @@ const en = {
     editText: "Edit text",
     openPresets: "Open presets",
     doubleClickToEdit: "Double-click to edit",
+    doubleClickEditTip: "Double-click the text area to start editing.",
     fullscreen: "Fill screen",
     exitFullscreen: "Exit full screen",
     bold: "Bold",

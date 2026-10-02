@@ -113,15 +113,16 @@ export function PresetMenu({
   activeIdRef.current = activeId;
 
   function saveCurrent() {
+    const existingId = activeIdRef.current;
     try {
       const savedId = save({
-        id: activeIdRef.current ?? undefined,
+        id: existingId ?? undefined,
         name,
         doc,
         style,
       });
-      activeIdRef.current = savedId;
-      onSaved(savedId, name.trim());
+      if (existingId) onSaved(savedId, name.trim());
+      else onNameChange("");
     } catch {
       // The save hook already shows an error toast.
     }

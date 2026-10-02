@@ -191,6 +191,7 @@ const catalog = {
     editText: "编辑文字",
     openPresets: "打开预设",
     doubleClickToEdit: "双击即可编辑",
+    doubleClickEditTip: "在文本区域双击即可开始编辑。",
     fullscreen: "填满屏幕",
     exitFullscreen: "退出全屏",
     bold: "粗体",

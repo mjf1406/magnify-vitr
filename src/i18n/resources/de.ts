@@ -196,6 +196,7 @@ const catalog = {
     editText: "Text bearbeiten",
     openPresets: "Vorlagen öffnen",
     doubleClickToEdit: "Doppelklicken zum Bearbeiten",
+    doubleClickEditTip: "Doppelklicken Sie in den Textbereich, um die Bearbeitung zu starten.",
     fullscreen: "Bildschirm füllen",
     exitFullscreen: "Vollbild beenden",
     bold: "Fett",

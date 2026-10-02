@@ -194,6 +194,7 @@ const catalog = {
     editText: "Editar texto",
     openPresets: "Abrir predefinições",
     doubleClickToEdit: "Clique duas vezes para editar",
+    doubleClickEditTip: "Clique duas vezes na área de texto para começar a editar.",
     fullscreen: "Encher a tela",
     exitFullscreen: "Sair da tela cheia",
     bold: "Negrito",
