@@ -22,6 +22,13 @@ const _schema = i.schema({
       visibility: i.string().indexed(),
       createdAt: i.date().indexed(),
     }),
+    presets: i.entity({
+      name: i.string(),
+      doc: i.json(),
+      style: i.json(),
+      createdAt: i.date().indexed(),
+      updatedAt: i.date().indexed(),
+    }),
   },
   links: {
     profileUser: {
@@ -45,6 +52,10 @@ const _schema = i.schema({
     fileRecordOwner: {
       forward: { on: "fileRecords", has: "one", label: "owner", required: true },
       reverse: { on: "$users", has: "many", label: "files" },
+    },
+    presetOwner: {
+      forward: { on: "presets", has: "one", label: "owner", required: true },
+      reverse: { on: "$users", has: "many", label: "presets" },
     },
   },
 });

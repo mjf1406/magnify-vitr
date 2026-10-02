@@ -10,4 +10,6 @@ export const STORAGE_KEYS = {
   theme: appStorageKey("ui-theme"),
   /** sessionStorage: hide PWA reload banner until the tab session ends. */
   pwaUpdateLater: appStorageKey("pwa-update-later"),
+  /** localStorage: unsaved big-text draft. */
+  bigtextDraft: appStorageKey("bigtext-draft"),
 } as const;

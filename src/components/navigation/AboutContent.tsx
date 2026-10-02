@@ -62,7 +62,7 @@ function FooterColumn({ title, children }: { title: string; children: ReactNode 
   );
 }
 
-export function AppFooter() {
+export function AboutContent() {
   const { t } = useTranslation("common");
   const { user } = db.useAuth();
   const isAuthenticated = Boolean(user);
@@ -70,8 +70,9 @@ export function AppFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-64 shrink-0 border-t bg-background">
+    <main className="bg-background">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10 sm:px-8">
+        <h1 className="text-2xl font-semibold tracking-tight">{t("about")}</h1>
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="@container/footer-brand col-span-2 flex flex-col gap-4 md:col-span-1">
             <a
@@ -153,6 +154,6 @@ export function AppFooter() {
           </div>
         </div>
       </div>
-    </footer>
+    </main>
   );
 }

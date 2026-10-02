@@ -2,10 +2,8 @@
  * Returns a same-app relative path for post-login navigation,
  * or "/" if the value is missing or unsafe (open-redirect protection).
  */
-import { PUBLIC_READ } from "../../../instant.perms";
-
 function defaultRedirect(): string {
-  return PUBLIC_READ ? "/" : "/files";
+  return "/";
 }
 
 export function getSafeAuthRedirect(redirect: unknown, origin?: string): string {

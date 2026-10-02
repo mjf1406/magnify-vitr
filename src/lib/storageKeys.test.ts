@@ -20,5 +20,6 @@ describe("storageKeys", () => {
     expect(STORAGE_KEYS.language).toBe(`${APP_CONFIG.slug}-language`);
     expect(STORAGE_KEYS.theme).toBe(`${APP_CONFIG.slug}-ui-theme`);
     expect(STORAGE_KEYS.pwaUpdateLater).toBe(`${APP_CONFIG.slug}-pwa-update-later`);
+    expect(STORAGE_KEYS.bigtextDraft).toBe(`${APP_CONFIG.slug}-bigtext-draft`);
   });
 });

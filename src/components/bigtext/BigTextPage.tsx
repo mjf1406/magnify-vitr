@@ -1,0 +1,146 @@
+import { useRef, useState } from "react";
+import { PencilIcon, SlidersHorizontalIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
+import { Button } from "@/components/ui/button";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { useDraft } from "@/hooks/bigtext/useDraft";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { loadDraft } from "@/lib/bigtext/draft";
+import { defaultStyle, sampleDoc, type PresetStyle, type RichDoc } from "@/lib/bigtext/types";
+import type { SavedPreset } from "@/hooks/presets/usePresets";
+
+import { BigTextDisplay } from "./BigTextDisplay";
+import { ColorRulesPanel } from "./ColorRulesPanel";
+import { PresetMenu } from "./PresetMenu";
+import { StyleControls } from "./StyleControls";
+import { TextEditor, type TextEditorHandle } from "./TextEditor";
+
+export function BigTextPage() {
+  const { t } = useTranslation("bigtext");
+  const isMobile = useIsMobile();
+  const [snapshot] = useState(loadDraft);
+  const [doc, setDoc] = useState<RichDoc>(snapshot?.doc ?? sampleDoc());
+  const [style, setStyle] = useState<PresetStyle>(snapshot?.style ?? defaultStyle());
+  const [name, setName] = useState("");
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [textOpen, setTextOpen] = useState(false);
+  const [selectAllToken, setSelectAllToken] = useState(0);
+  const editorRef = useRef<TextEditorHandle>(null);
+  useDraft(doc, style);
+
+  function loadPreset(preset: SavedPreset) {
+    setDoc(preset.doc);
+    setStyle(preset.style);
+    setName(preset.name);
+    setActiveId(preset.id);
+    editorRef.current?.load(preset.doc);
+  }
+
+  const editor = (
+    <TextEditor
+      ref={editorRef}
+      initialDoc={doc}
+      rules={style.colorRules}
+      onChange={setDoc}
+      selectAllToken={isMobile ? selectAllToken : 0}
+    />
+  );
+  const styleControls = (
+    <>
+      <StyleControls style={style} onChange={setStyle} />
+      <ColorRulesPanel
+        rules={style.colorRules}
+        onChange={(colorRules) => setStyle((current) => ({ ...current, colorRules }))}
+      />
+      <PresetMenu
+        doc={doc}
+        style={style}
+        activeId={activeId}
+        name={name}
+        onNameChange={setName}
+        onLoad={loadPreset}
+        onSaved={(id, savedName) => {
+          setActiveId(id);
+          setName(savedName);
+        }}
+        onActiveCleared={() => setActiveId(null)}
+      />
+    </>
+  );
+
+  if (isMobile) {
+    return (
+      <div className="relative h-svh">
+        <BigTextDisplay doc={doc} style={style} />
+        <Drawer showSwipeHandle>
+          <DrawerTrigger
+            render={
+              <Button
+                variant="secondary"
+                size="icon-sm"
+                aria-label={t("openControls")}
+                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 translate-x-1"
+              />
+            }
+          >
+            <SlidersHorizontalIcon />
+          </DrawerTrigger>
+          <DrawerContent className="[--drawer-height:85svh]">
+            <DrawerHeader className="sr-only">
+              <DrawerTitle>{t("openControls")}</DrawerTitle>
+            </DrawerHeader>
+            <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+              {styleControls}
+            </div>
+          </DrawerContent>
+        </Drawer>
+        <Drawer
+          showSwipeHandle
+          open={textOpen}
+          onOpenChange={(open) => {
+            setTextOpen(open);
+            if (open) setSelectAllToken((token) => token + 1);
+          }}
+        >
+          <DrawerTrigger
+            render={
+              <Button
+                variant="secondary"
+                size="icon-sm"
+                aria-label={t("editText")}
+                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 -translate-x-[calc(100%+0.25rem)]"
+              />
+            }
+          >
+            <PencilIcon />
+          </DrawerTrigger>
+          <DrawerContent className="[--drawer-height:50svh]">
+            <DrawerHeader className="sr-only">
+              <DrawerTitle>{t("editText")}</DrawerTitle>
+            </DrawerHeader>
+            <div className="flex min-h-0 flex-1 flex-col overflow-y-auto p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+              {editor}
+            </div>
+          </DrawerContent>
+        </Drawer>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid h-[calc(100svh-3.5rem)] grid-cols-[clamp(20rem,30vw,26rem)_minmax(0,1fr)]">
+      <aside className="flex flex-col gap-6 overflow-y-auto border-r border-border p-4">
+        {editor}
+        {styleControls}
+      </aside>
+      <BigTextDisplay doc={doc} style={style} />
+    </div>
+  );
+}

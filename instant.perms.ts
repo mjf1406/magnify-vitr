@@ -13,6 +13,7 @@ export const PUBLIC_READ = false;
 const isSelf = "auth.id == data.id";
 const isOwnProfile = "auth.id in data.ref('$user.id')";
 const isFileOwner = "auth.id in data.ref('owner.id')";
+const isPresetOwner = "auth.id in data.ref('owner.id')";
 const isAllowedUser = `auth.email == '${ALLOWED_EMAIL}'`;
 const canWrite = isAllowedUser;
 
@@ -58,6 +59,14 @@ const rules = {
       create: `${canWrite} && ${isFileOwner}`,
       update: `${canWrite} && ${isFileOwner}`,
       delete: `${canWrite} && ${isFileOwner}`,
+    },
+  },
+  presets: {
+    allow: {
+      view: `${canWrite} && ${isPresetOwner}`,
+      create: `${canWrite} && ${isPresetOwner}`,
+      update: `${canWrite} && ${isPresetOwner}`,
+      delete: `${canWrite} && ${isPresetOwner}`,
     },
   },
 } satisfies InstantRules;

@@ -1,69 +1,111 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import { db } from "@/lib/instant/db";
+import {
+  getUnsyncedMutationCount,
+  subscribePendingMutations,
+} from "@/lib/instant/pendingMutations";
 
-export type ConnectionStatus = "connected" | "connecting" | "reconnecting" | "offline";
+export type ConnectionStatus = "connected" | "connecting" | "reconnecting" | "offline" | "syncing";
 
 const DISCONNECTED_DEBOUNCE_MS = 2000;
-
-type InstantConnectionStatus = "connecting" | "opened" | "authenticated" | "closed" | "errored";
+const MIN_SYNCING_MS = 800;
 
 export function useConnectionStatus() {
-  const [raw, setRaw] = useState<InstantConnectionStatus>("connecting");
+  const raw = db.useConnectionStatus();
+  const unsyncedCount = useSyncExternalStore(
+    subscribePendingMutations,
+    getUnsyncedMutationCount,
+    () => 0,
+  );
   const [status, setStatus] = useState<ConnectionStatus>("connecting");
   const hasEverConnectedRef = useRef(false);
-  const hasRealOutageRef = useRef(false);
+  const hadOutageRef = useRef(false);
   const disconnectTimerRef = useRef<number | null>(null);
-  const [restoredNonce, setRestoredNonce] = useState(0);
-
-  useEffect(() => {
-    const subscribe = (
-      db as unknown as {
-        subscribeConnectionStatus?: (cb: (status: InstantConnectionStatus) => void) => () => void;
-      }
-    ).subscribeConnectionStatus;
-    if (!subscribe) {
-      setStatus("connected");
-      return;
-    }
-    return subscribe((next) => {
-      setRaw(next);
-    });
-  }, []);
+  const syncingStartedAtRef = useRef<number | null>(null);
+  const minSyncTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (disconnectTimerRef.current !== null) {
       window.clearTimeout(disconnectTimerRef.current);
       disconnectTimerRef.current = null;
     }
+
     const connected = raw === "authenticated" || raw === "opened";
     if (connected) {
-      if (hasRealOutageRef.current) {
-        setRestoredNonce((n) => n + 1);
-      }
-      hasRealOutageRef.current = false;
       hasEverConnectedRef.current = true;
-      setStatus("connected");
+      if (hadOutageRef.current) {
+        if (syncingStartedAtRef.current === null) {
+          syncingStartedAtRef.current = Date.now();
+        }
+        setStatus("syncing");
+      } else {
+        setStatus("connected");
+      }
       return;
     }
-    if (!hasEverConnectedRef.current) {
-      setStatus("connecting");
-      return;
+
+    if (minSyncTimerRef.current !== null) {
+      window.clearTimeout(minSyncTimerRef.current);
+      minSyncTimerRef.current = null;
     }
-    setStatus("reconnecting");
+    syncingStartedAtRef.current = null;
+    setStatus(hasEverConnectedRef.current ? "reconnecting" : "connecting");
     disconnectTimerRef.current = window.setTimeout(() => {
-      hasRealOutageRef.current = true;
+      hadOutageRef.current = true;
       setStatus("offline");
       disconnectTimerRef.current = null;
     }, DISCONNECTED_DEBOUNCE_MS);
+
+    return () => {
+      if (disconnectTimerRef.current !== null) {
+        window.clearTimeout(disconnectTimerRef.current);
+        disconnectTimerRef.current = null;
+      }
+    };
   }, [raw]);
+
+  useEffect(() => {
+    if (status !== "syncing") return;
+
+    if (unsyncedCount > 0) {
+      if (minSyncTimerRef.current !== null) {
+        window.clearTimeout(minSyncTimerRef.current);
+        minSyncTimerRef.current = null;
+      }
+      return;
+    }
+
+    const startedAt = syncingStartedAtRef.current ?? Date.now();
+    const remaining = MIN_SYNCING_MS - (Date.now() - startedAt);
+
+    const finish = () => {
+      hadOutageRef.current = false;
+      syncingStartedAtRef.current = null;
+      minSyncTimerRef.current = null;
+      setStatus("connected");
+    };
+
+    if (remaining <= 0) {
+      finish();
+      return;
+    }
+
+    minSyncTimerRef.current = window.setTimeout(finish, remaining);
+
+    return () => {
+      if (minSyncTimerRef.current !== null) {
+        window.clearTimeout(minSyncTimerRef.current);
+        minSyncTimerRef.current = null;
+      }
+    };
+  }, [status, unsyncedCount]);
 
   return useMemo(
     () => ({
       status,
-      restoredNonce,
       connectionState: { status: raw },
     }),
-    [status, restoredNonce, raw],
+    [status, raw],
   );
 }

@@ -4,9 +4,9 @@
  * `name` is never translated — i18n uses it via defaultVariables.appName.
  */
 export const APP_CONFIG = {
-  name: "vitr",
+  name: "Magnitext",
   /** Storage keys (`${slug}-…` via src/lib/storageKeys.ts) and package-name check. */
-  slug: "vitr",
+  slug: "magnify",
   /** Appended after name in the document title (`Name | suffix`). */
   titleSuffix: "App",
   /** Canonical app origin. */
