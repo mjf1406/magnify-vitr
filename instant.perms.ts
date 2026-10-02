@@ -14,6 +14,8 @@ const isSelf = "auth.id == data.id";
 const isOwnProfile = "auth.id in data.ref('$user.id')";
 const isFileOwner = "auth.id in data.ref('owner.id')";
 const isPresetOwner = "auth.id in data.ref('owner.id')";
+const isConversationOwner = "auth.id in data.ref('owner.id')";
+const isMessageOwner = "auth.id in data.ref('conversation.owner.id')";
 const isAllowedUser = `auth.email == '${ALLOWED_EMAIL}'`;
 const canWrite = isAllowedUser;
 
@@ -67,6 +69,22 @@ const rules = {
       create: `${canWrite} && ${isPresetOwner}`,
       update: `${canWrite} && ${isPresetOwner}`,
       delete: `${canWrite} && ${isPresetOwner}`,
+    },
+  },
+  conversations: {
+    allow: {
+      view: `${canWrite} && ${isConversationOwner}`,
+      create: `${canWrite} && ${isConversationOwner}`,
+      update: `${canWrite} && ${isConversationOwner}`,
+      delete: `${canWrite} && ${isConversationOwner}`,
+    },
+  },
+  messages: {
+    allow: {
+      view: `${canWrite} && ${isMessageOwner}`,
+      create: `${canWrite} && ${isMessageOwner}`,
+      update: `${canWrite} && ${isMessageOwner}`,
+      delete: `${canWrite} && ${isMessageOwner}`,
     },
   },
 } satisfies InstantRules;

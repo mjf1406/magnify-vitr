@@ -29,6 +29,16 @@ const _schema = i.schema({
       createdAt: i.date().indexed(),
       updatedAt: i.date().indexed(),
     }),
+    conversations: i.entity({
+      otherName: i.string(),
+      createdAt: i.date().indexed(),
+      updatedAt: i.date().indexed(),
+    }),
+    messages: i.entity({
+      text: i.string(),
+      sender: i.string().indexed(),
+      createdAt: i.date().indexed(),
+    }),
   },
   links: {
     profileUser: {
@@ -56,6 +66,20 @@ const _schema = i.schema({
     presetOwner: {
       forward: { on: "presets", has: "one", label: "owner", required: true },
       reverse: { on: "$users", has: "many", label: "presets" },
+    },
+    conversationOwner: {
+      forward: { on: "conversations", has: "one", label: "owner", required: true },
+      reverse: { on: "$users", has: "many", label: "conversations" },
+    },
+    conversationMessages: {
+      forward: {
+        on: "messages",
+        has: "one",
+        label: "conversation",
+        required: true,
+        onDelete: "cascade",
+      },
+      reverse: { on: "conversations", has: "many", label: "messages" },
     },
   },
 });

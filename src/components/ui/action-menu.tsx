@@ -2,6 +2,7 @@ import { MoreVerticalIcon } from "lucide-react";
 import { Fragment, type ReactNode, useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -56,7 +57,7 @@ export function ActionMenu({ items, label, align = "end", className }: ActionMen
             type="button"
             variant="ghost"
             size="icon-sm"
-            className={className ?? "relative z-10"}
+            className={cn("relative z-10", className)}
             aria-label={label}
           />
         }

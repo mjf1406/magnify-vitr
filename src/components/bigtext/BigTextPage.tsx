@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { BookmarkIcon, PencilIcon, SlidersHorizontalIcon } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { BookmarkIcon, MessagesSquareIcon, PencilIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { useTheme } from "@/components/theme/theme-context";
@@ -115,7 +116,7 @@ export function BigTextPage() {
                 variant="secondary"
                 size="icon-sm"
                 aria-label={t("openControls")}
-                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 -translate-x-1/2"
+                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 -translate-x-[calc(100%+0.125rem)]"
               />
             }
           >
@@ -144,7 +145,7 @@ export function BigTextPage() {
                 variant="secondary"
                 size="icon-sm"
                 aria-label={t("editText")}
-                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 -translate-x-[calc(150%+0.25rem)]"
+                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 -translate-x-[calc(200%+0.375rem)]"
               />
             }
           >
@@ -166,7 +167,7 @@ export function BigTextPage() {
                 variant="secondary"
                 size="icon-sm"
                 aria-label={t("openPresets")}
-                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 translate-x-[calc(50%+0.25rem)]"
+                className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 translate-x-[0.125rem]"
               />
             }
           >
@@ -181,6 +182,16 @@ export function BigTextPage() {
             </div>
           </DrawerContent>
         </Drawer>
+        <Button
+          nativeButton={false}
+          variant="secondary"
+          size="icon-sm"
+          aria-label={t("openTalk")}
+          className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-1/2 z-30 translate-x-[calc(100%+0.375rem)]"
+          render={<Link to="/talk" />}
+        >
+          <MessagesSquareIcon />
+        </Button>
       </div>
     );
   }

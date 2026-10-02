@@ -16,6 +16,7 @@ import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as PublicSplatRouteImport } from './routes/_public/$'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
+import { Route as PublicTalkRouteImport } from './routes/_public/talk'
 import { Route as PublicUnauthorizedRouteImport } from './routes/_public/unauthorized'
 import { Route as AuthenticatedAppAccountRouteImport } from './routes/_authenticated/_app/account'
 import { Route as AuthenticatedAppFilesRouteImport } from './routes/_authenticated/_app/files'
@@ -54,6 +55,11 @@ const PublicLoginRoute = PublicLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => PublicRouteRoute,
 } as any)
+const PublicTalkRoute = PublicTalkRouteImport.update({
+  id: '/talk',
+  path: '/talk',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
 const PublicUnauthorizedRoute = PublicUnauthorizedRouteImport.update({
   id: '/unauthorized',
   path: '/unauthorized',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/$': typeof PublicSplatRoute
   '/about': typeof PublicAboutRoute
   '/login': typeof PublicLoginRoute
+  '/talk': typeof PublicTalkRoute
   '/unauthorized': typeof PublicUnauthorizedRoute
   '/account': typeof AuthenticatedAppAccountRoute
   '/files': typeof AuthenticatedAppFilesRoute
@@ -97,6 +104,7 @@ export interface FileRoutesByTo {
   '/$': typeof PublicSplatRoute
   '/about': typeof PublicAboutRoute
   '/login': typeof PublicLoginRoute
+  '/talk': typeof PublicTalkRoute
   '/unauthorized': typeof PublicUnauthorizedRoute
   '/account': typeof AuthenticatedAppAccountRoute
   '/files': typeof AuthenticatedAppFilesRoute
@@ -111,6 +119,7 @@ export interface FileRoutesById {
   '/_public/$': typeof PublicSplatRoute
   '/_public/about': typeof PublicAboutRoute
   '/_public/login': typeof PublicLoginRoute
+  '/_public/talk': typeof PublicTalkRoute
   '/_public/unauthorized': typeof PublicUnauthorizedRoute
   '/_public/': typeof PublicIndexRoute
   '/_authenticated/_app/account': typeof AuthenticatedAppAccountRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/$'
     | '/about'
     | '/login'
+    | '/talk'
     | '/unauthorized'
     | '/account'
     | '/files'
@@ -136,6 +146,7 @@ export interface FileRouteTypes {
     | '/$'
     | '/about'
     | '/login'
+    | '/talk'
     | '/unauthorized'
     | '/account'
     | '/files'
@@ -149,6 +160,7 @@ export interface FileRouteTypes {
     | '/_public/$'
     | '/_public/about'
     | '/_public/login'
+    | '/_public/talk'
     | '/_public/unauthorized'
     | '/_public/'
     | '/_authenticated/_app/account'
@@ -211,6 +223,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof PublicLoginRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/talk': {
+      id: '/_public/talk'
+      path: '/talk'
+      fullPath: '/talk'
+      preLoaderRoute: typeof PublicTalkRouteImport
       parentRoute: typeof PublicRouteRoute
     }
     '/_public/unauthorized': {
@@ -285,6 +304,7 @@ interface PublicRouteRouteChildren {
   PublicSplatRoute: typeof PublicSplatRoute
   PublicAboutRoute: typeof PublicAboutRoute
   PublicLoginRoute: typeof PublicLoginRoute
+  PublicTalkRoute: typeof PublicTalkRoute
   PublicUnauthorizedRoute: typeof PublicUnauthorizedRoute
   PublicIndexRoute: typeof PublicIndexRoute
 }
@@ -293,6 +313,7 @@ const PublicRouteRouteChildren: PublicRouteRouteChildren = {
   PublicSplatRoute: PublicSplatRoute,
   PublicAboutRoute: PublicAboutRoute,
   PublicLoginRoute: PublicLoginRoute,
+  PublicTalkRoute: PublicTalkRoute,
   PublicUnauthorizedRoute: PublicUnauthorizedRoute,
   PublicIndexRoute: PublicIndexRoute,
 }

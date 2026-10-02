@@ -22,8 +22,10 @@ import {
 import { db } from "@/lib/instant/db";
 
 const ABOUT_LINK = { to: "/about" as const, labelKey: "about" };
+const TALK_LINK = { to: "/talk" as const, labelKey: "talk" };
 
 const AUTH_NAV_LINKS = [
+  TALK_LINK,
   { to: "/files" as const, labelKey: "files" },
   { to: "/account" as const, labelKey: "account" },
   { to: "/settings" as const, labelKey: "settings" },
@@ -46,7 +48,7 @@ export function Navbar() {
   const { user } = db.useAuth();
   const isAuthenticated = Boolean(user);
   const homeTo = "/" as const;
-  const navLinks = isAuthenticated ? AUTH_NAV_LINKS : [ABOUT_LINK];
+  const navLinks = isAuthenticated ? AUTH_NAV_LINKS : [TALK_LINK, ABOUT_LINK];
 
   useEffect(() => {
     setNavShown(false);
